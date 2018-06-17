@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "coutdown-timer": {
+    "countdown-timer": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/coutdown-timer",
+            "outputPath": "dist/countdown-timer",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -52,18 +52,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "coutdown-timer:build"
+            "browserTarget": "countdown-timer:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "coutdown-timer:build:production"
+              "browserTarget": "countdown-timer:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "coutdown-timer:build"
+            "browserTarget": "countdown-timer:build"
           }
         },
         "test": {
@@ -87,7 +87,7 @@
         }
       }
     },
-    "coutdown-timer-e2e": {
+    "countdown-timer-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -95,7 +95,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "coutdown-timer:serve"
+            "devServerTarget": "countdown-timer:serve"
           }
         },
         "lint": {
@@ -108,5 +108,5 @@
       }
     }
   },
-  "defaultProject": "coutdown-timer"
+  "defaultProject": "coutcountdowndown-timer"
 }

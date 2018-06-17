@@ -69,14 +69,14 @@
                   <input type="text" formControlName="timeInMinutes" class="form-control" id="formGroupExampleInput2" placeholder="Time in minutes">
                 </div>
               </div>
-              <button [disabled]="form.invalid" class="btn btn-success my-2">Add Timer</button>
+              <button [disabled]="form.invalid" class="btn btn-primary">Add Timer</button>
             </form>
           </div>
 
           <h4 *ngIf="totalTime">{{totalTime / 60}} total minutes</h4>
 
-          <button class="btn btn-primary my-2" (click)="start()">Start Timers</button>
-          <button class="btn btn-secondary my-2" (click)="resetTimers()">Reset Timers</button>
+          <button class="btn btn-success" (click)="start()">Start Timers</button>
+          <button class="btn btn-secondary" (click)="resetTimers()">Reset Timers</button>
 
         </div>
       </section>
@@ -95,7 +95,7 @@
             </span>
             <span *ngIf="item.currentActive" style="font-weight: bold; ">Minutes left: {{item.minutesLeft}}
             </span>
-            <button (click)="deleteTimer(item)" *ngIf="!timerStarted">Delete Timer</button>
+            <button (click)="deleteTimer(item)" class="btn btn-danger btn-sm" *ngIf="!timerStarted">Delete Timer</button>
           </li>
         </ul>
       </div>
