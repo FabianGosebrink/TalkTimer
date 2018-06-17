@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 export class TimerTick {
   private _id: string;
   public get id() {
@@ -22,6 +24,16 @@ export class TimerTick {
 
   public get intervalMinutes() {
     return Math.round(this.intervalSeconds / 60);
+  }
+
+  public get secondsRan() {
+    if (this.secondsLeft === 0) {
+      return 0;
+    }
+    const seconds = Math.round(this.intervalSeconds - this.secondsLeft) || 0;
+
+    const duration = moment.duration(seconds, 'seconds');
+    return duration;
   }
 
   public secondsLeft = 0;

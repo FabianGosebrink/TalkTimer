@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { interval, merge } from 'rxjs';
-import { finalize, map, take, tap } from 'rxjs/operators';
+import { interval, merge, Subject } from 'rxjs';
+import { finalize, map, take, takeUntil, tap } from 'rxjs/operators';
 import { TimerTick } from './timerTick.model';
 import { TimerTickResult } from './timerTickResult.model';
 
@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   form: FormGroup;
   totalTime: number;
   timerStarted = false;
+  destroy$ = new Subject();
 
   listOfIntervals: TimerTick[] = [];
 
@@ -53,6 +54,9 @@ export class AppComponent implements OnInit {
   resetTimers() {
     this.listOfIntervals = [];
     this.form.reset();
+    this.totalTime = this.getTotalTime();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   start() {
@@ -63,7 +67,8 @@ export class AppComponent implements OnInit {
     merge(...listOfObservables)
       .pipe(
         tap(() => (this.timerStarted = true)),
-        finalize(() => (this.timerStarted = false))
+        finalize(() => (this.timerStarted = false)),
+        takeUntil(this.destroy$)
       )
       .subscribe((result: TimerTickResult) => {
         const currentTimerTick = this.getTimerTickById(result.id);

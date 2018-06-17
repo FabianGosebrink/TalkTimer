@@ -1,105 +1,67 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<header>
-  <div class="collapse bg-dark" id="navbarHeader">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-md-7 py-4">
-          <h4 class="text-white">TalkTimer</h4>
-          <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences
-            long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact
-            information.
-          </p>
-        </div>
-        <div class="col-sm-4 offset-md-1 py-4">
-          <h4 class="text-white">Contact</h4>
-          <ul class="list-unstyled">
-            <li>
-              <a href="#" class="text-white">Follow on Twitter</a>
-            </li>
-            <li>
-              <a href="#" class="text-white">Like on Facebook</a>
-            </li>
-            <li>
-              <a href="#" class="text-white">Email me</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="navbar navbar-dark bg-dark box-shadow">
-    <div class="container d-flex justify-content-between">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" class="mr-2">
-          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-          <circle cx="12" cy="13" r="4"></circle>
-        </svg>
-        <strong>TalkTimer</strong>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </div>
-</header>
+<app-header></app-header>
 
 
 <main role="main">
 
   <div class="album py-5 bg-light">
     <div class="container">
-      <section class="jumbotron text-center">
-        <div class="container">
-          <h1 class="jumbotron-heading">TalkTimer</h1>
-          <p class="lead text-muted"></p>
-
-          <div class="row justify-content-center">
-            <form (ngSubmit)="addTimer()" [formGroup]="form">
-              <div class="form-row ">
-                <div class="form-group">
-                  <label for="formGroupExampleInput">Topic</label>
-                  <input type="text" formControlName="topic" class="form-control" id="formGroupExampleInput" placeholder="Topic">
+      <div class="container">
+        <div>
+          <form (ngSubmit)="addTimer()" [formGroup]="form">
+            <div class="form-row align-items-center">
+              <div class="col-auto">
+                <label class="sr-only" for="inlineFormInput">Topic</label>
+                <input type="text" formControlName="topic" class="form-control mb-2" id="inlineFormInput" placeholder="Topic">
+              </div>
+              <div class="col-auto">
+                <label class="sr-only" for="inlineFormInputGroup">Minutes</label>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">m</div>
+                  </div>
+                  <input type="text" formControlName="timeInMinutes" class="form-control" id="inlineFormInputGroup" placeholder="Time in minutes">
                 </div>
               </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="formGroupExampleInput2">Time in minutes</label>
-                  <input type="text" formControlName="timeInMinutes" class="form-control" id="formGroupExampleInput2" placeholder="Time in minutes">
-                </div>
+
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-2">Add</button>
               </div>
-              <button [disabled]="form.invalid" class="btn btn-primary">Add Timer</button>
-            </form>
-          </div>
+            </div>
+          </form>
+        </div>
 
-          <h4 *ngIf="totalTime">{{totalTime / 60}} total minutes</h4>
 
+        <p>
           <button class="btn btn-success" (click)="start()">Start Timers</button>
           <button class="btn btn-secondary" (click)="resetTimers()">Reset Timers</button>
 
+        </p>
+        <div>
+          <h5>{{(totalTime / 60) || 0}} total minutes</h5>
         </div>
-      </section>
 
-      <div>
+        <h1 class="display-4">Parts of your talk:</h1>
+
         <ul style="list-style-type: none;">
           <li *ngFor="let item of listOfIntervals; let i = index">
-            <h3 *ngIf="!item.currentActive" style="color: grey; ">{{i + 1}}: {{item.topic}}</h3>
-            <h3 *ngIf="item.currentActive">{{i + 1}}: {{item.topic}}</h3>
+            <h3 *ngIf="!item.currentActive" style="color: grey; ">{{item.topic}}</h3>
+            <h1 class="display-2" *ngIf="item.currentActive">{{item.topic}}
+              <small class="text-muted">{{item.secondsRan}} s</small>
+            </h1>
             <div class="progress" *ngIf="item.currentActive">
-              <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.percentage + '%'}">
+              <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.percentage + '%'}">
                 {{item.percentage}}%
               </div>
             </div>
             <span *ngIf="!item.currentActive" style="color: grey; ">Minutes: {{item.intervalMinutes}}
             </span>
-            <span *ngIf="item.currentActive" style="font-weight: bold; ">Minutes left: {{item.minutesLeft}}
-            </span>
+            <h2 *ngIf="item.currentActive" style="font-weight: bold; ">Minutes left: {{item.minutesLeft}}
+            </h2>
             <button (click)="deleteTimer(item)" class="btn btn-danger btn-sm" *ngIf="!timerStarted">Delete Timer</button>
           </li>
         </ul>
-      </div>
 
+      </div>
     </div>
   </div>
 
