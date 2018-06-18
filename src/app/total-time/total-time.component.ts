@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TotalTimeComponent implements OnInit {
   @Input() totalTime = 0;
+  @Input() totalPercentage = 0;
   constructor() {}
 
   ngOnInit() {}

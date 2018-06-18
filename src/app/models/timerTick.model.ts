@@ -34,11 +34,12 @@ export class TimerTick {
     return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
-  secondsLeft = 0;
+  secondsLeft: number;
   currentActive = false;
 
   constructor(public topic: string, public intervalSeconds: number) {
     this._id = this.createGuid();
+    this.secondsLeft = intervalSeconds;
   }
 
   private createGuid() {

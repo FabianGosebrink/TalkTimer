@@ -1,19 +1,25 @@
-<h1 class="display-4">Parts of your talk:</h1>
+<h3 class="display-5">Parts of your talk</h3>
 <ul style="list-style-type: none;">
   <li *ngFor="let item of listOfIntervals; let i = index">
-    <h3 *ngIf="!item.currentActive" style="color: grey; ">{{item.topic}}</h3>
-    <h1 class="display-2" *ngIf="item.currentActive">{{item.topic}}
-      <small class="text-muted">{{item.secondsRan}} s</small>
-    </h1>
-    <div class="progress" *ngIf="item.currentActive">
-      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.percentage + '%'}">
-        {{item.percentage}}%
-      </div>
+
+    <div *ngIf="!item.currentActive; else active" style="color: grey; ">
+      <h5>{{item.topic}}</h5>
+      <span>Time: {{item.intervalTime}} </span>
     </div>
-    <span *ngIf="!item.currentActive" style="color: grey; ">Time: {{item.intervalTime}}
-    </span>
-    <h2 *ngIf="item.currentActive" style="font-weight: bold; ">Time left: {{item.timeLeft}}
-    </h2>
-    <button (click)="deleteTimerTick(item)" class="btn btn-danger btn-sm" *ngIf="!talkIsRunning">Delete Timer</button>
+
+    <ng-template #active>
+      <h1 class="display-2" *ngIf="item.currentActive">{{item.topic}}
+        <small class="text-muted">{{item.secondsRan}} s</small>
+      </h1>
+      <div class="progress" *ngIf="item.currentActive">
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.percentage + '%'}">
+          {{item.percentage}}%
+        </div>
+      </div>
+      <h3 class="display-3" *ngIf="item.currentActive">Time left: {{item.timeLeft}}
+      </h3>
+    </ng-template>
+
+    <button (click)="deleteTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Delete Timer</button>
   </li>
 </ul>

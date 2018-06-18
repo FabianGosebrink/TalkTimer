@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   private startIndex = 0;
   title = 'app';
   totalTime: number;
+  totalPercentage: number;
   talkIsRunning = false;
   private listOfObservables: Observable<TimerTick>[] = [];
 
@@ -64,6 +65,10 @@ export class AppComponent implements OnInit {
         })
       )
       .subscribe((currentTimerTick: TimerTick) => {
+        this.totalPercentage = Math.round(
+          this.timerTickService.getTotalPercentage()
+        );
+
         if (currentTimerTick.secondsLeft === 0) {
           currentTimerTick.currentActive = false;
         }

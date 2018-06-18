@@ -17,7 +17,10 @@ export class TalkFormComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      timeInMinutes: new FormControl('', Validators.required),
+      timeInMinutes: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]+$')
+      ]),
       topic: new FormControl('', Validators.required)
     });
   }

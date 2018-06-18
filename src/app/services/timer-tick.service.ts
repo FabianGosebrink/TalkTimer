@@ -13,8 +13,6 @@ export class TimerTickService {
     return this.listOfIntervalsInternal;
   }
 
-  constructor() {}
-
   addTimerTick(timerTick: TimerTick) {
     this.listOfIntervalsInternal.push(timerTick);
   }
@@ -38,6 +36,13 @@ export class TimerTickService {
     return totalTime;
   }
 
+  getTotalPercentage() {
+    const totalTime = this.getTotalTime();
+    const allSecondsLeft = this.getAllSecondsLeft();
+    const percentage = (100 / totalTime) * allSecondsLeft;
+    return percentage;
+  }
+
   createInterval(timerTick: TimerTick) {
     const toReturn = interval(1000).pipe(
       take(timerTick.intervalSeconds + 1),
@@ -48,5 +53,14 @@ export class TimerTickService {
       })
     );
     return toReturn;
+  }
+
+  private getAllSecondsLeft() {
+    let allSecondsLeft = 0;
+    this.listOfIntervalsInternal.forEach(element => {
+      allSecondsLeft += element.secondsLeft;
+    });
+
+    return allSecondsLeft;
   }
 }

@@ -1,3 +1,16 @@
 <div>
   <h5>{{(totalTime / 60) || 0}} total minutes</h5>
+
+  <div class="progress" style="height: 40px;">
+    <div class="progress-bar bg-success" role="progressbar" [ngClass]="{
+       'progress-bar': true, 
+       'bg-success': totalPercentage >= 50, 
+       'bg-warning': totalPercentage > 15 && totalPercentage < 50,
+       'bg-danger': totalPercentage < 15
+      }" [ngStyle]="{'width': totalPercentage + '%', 'font-weight': bold}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+      <span *ngIf="totalPercentage > 0">
+
+      </span>
+    </div>
+  </div>
 </div>
