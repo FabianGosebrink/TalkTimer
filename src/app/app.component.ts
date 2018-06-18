@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   talkIsRunning = false;
   private listOfObservables: Observable<TimerTick>[] = [];
 
-  constructor(private readonly timerTickService: TimerTickService) {}
+  constructor(public readonly timerTickService: TimerTickService) {}
 
   ngOnInit() {}
 

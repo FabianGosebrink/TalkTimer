@@ -10,10 +10,10 @@
         {{item.percentage}}%
       </div>
     </div>
-    <span *ngIf="!item.currentActive" style="color: grey; ">Minutes: {{item.intervalMinutes}}
+    <span *ngIf="!item.currentActive" style="color: grey; ">Time: {{item.intervalTime}}
     </span>
-    <h2 *ngIf="item.currentActive" style="font-weight: bold; ">Minutes left: {{item.minutesLeft}}
+    <h2 *ngIf="item.currentActive" style="font-weight: bold; ">Time left: {{item.timeLeft}}
     </h2>
-    <button (click)="deleteTimerTick(item)" class="btn btn-danger btn-sm" *ngIf="!timerStarted">Delete Timer</button>
+    <button (click)="deleteTimerTick(item)" class="btn btn-danger btn-sm" *ngIf="!talkIsRunning">Delete Timer</button>
   </li>
 </ul>

@@ -6,23 +6,25 @@ export class TimerTick {
     return this._id;
   }
 
-  public get finished() {
+  get finished() {
     return this.secondsLeft === 0;
   }
 
-  public get percentage() {
+  get percentage() {
     return Math.round((this.secondsLeft / this.intervalSeconds) * 100);
   }
 
-  public get minutesLeft() {
-    return Math.round(this.secondsLeft / 60);
+  get timeLeft() {
+    const duration = moment.duration(this.secondsLeft, 'seconds');
+    return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
-  public get intervalMinutes() {
-    return Math.round(this.intervalSeconds / 60);
+  get intervalTime() {
+    const duration = moment.duration(this.intervalSeconds, 'seconds');
+    return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
-  public get secondsRan() {
+  get secondsRan() {
     if (this.secondsLeft === 0) {
       return 0;
     }
@@ -32,8 +34,8 @@ export class TimerTick {
     return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
-  public secondsLeft = 0;
-  public currentActive = false;
+  secondsLeft = 0;
+  currentActive = false;
 
   constructor(public topic: string, public intervalSeconds: number) {
     this._id = this.createGuid();

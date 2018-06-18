@@ -5,9 +5,13 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-prod": "ng build --prod --output-path=\".dist/web\" --base-href ./",
+    "build-all": "npm run build-prod && npm run build-desktop",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "prepare-desktop": "mkdirp ./.temp/desktop && ncp buildAssets/desktop .temp/desktop/ && ncp .dist/web .temp/desktop/ && rimraf .dist/desktop/",
+    "build-desktop": "npm run prepare-desktop && electron-packager .temp/desktop/ --electronVersion=2.0.0 --platform=win32,linux --out=./.dist/desktop/"
   },
   "private": true,
   "dependencies": {
@@ -23,8 +27,10 @@
     "boostrap": "^2.0.0",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.4",
+    "electron-packager": "^12.1.0",
     "jquery": "^3.3.1",
     "moment": "^2.22.2",
+    "ncp": "^2.0.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },
