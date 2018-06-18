@@ -35,7 +35,9 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
 
   private setInitialtimerTicksForTalk() {
     this.selectedTalk.timerTicks.forEach(timerTick => {
-      this.timerTickService.addTimerTick(timerTick);
+      const toAdd = new TimerTick(timerTick.topic, timerTick.intervalSeconds);
+      toAdd.id = timerTick.id;
+      this.timerTickService.addTimerTick(toAdd);
     });
   }
 

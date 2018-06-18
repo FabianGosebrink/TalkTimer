@@ -1,7 +1,6 @@
 <h3 class="display-5 space-bottom">Parts of your talk</h3>
 <ul style="list-style-type: none;">
   <li *ngFor="let item of listOfIntervals; let i = index" class="space-bottom">
-
     <div *ngIf="!item.currentActive; else active" style="color: grey; ">
       <h5>{{item.topic}}</h5>
       <span>Time: {{item.intervalTime}} </span>

@@ -19,7 +19,10 @@ export class TimerTickService {
   }
 
   addTimerTick(timerTick: TimerTick) {
-    this.listOfIntervalsInternal.push(timerTick);
+    this.listOfIntervalsInternal = [
+      ...this.listOfIntervalsInternal,
+      ...[timerTick]
+    ];
   }
 
   deleteTimerTick(timerTick: TimerTick) {

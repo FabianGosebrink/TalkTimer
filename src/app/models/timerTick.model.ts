@@ -1,8 +1,8 @@
 import * as moment from 'moment';
+import { Guid } from '../services/guid.service';
 
 export class TimerTick {
-  readonly id: string;
-
+  id: string;
   get finished() {
     return this.secondsLeft === 0;
   }
@@ -35,29 +35,7 @@ export class TimerTick {
   currentActive = false;
 
   constructor(public topic: string, public intervalSeconds: number) {
-    this.id = this.createGuid();
+    this.id = Guid.MakeNew().ToString();
     this.secondsLeft = intervalSeconds;
-  }
-
-  private createGuid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return (
-      s4() +
-      s4() +
-      '-' +
-      s4() +
-      '-' +
-      s4() +
-      '-' +
-      s4() +
-      '-' +
-      s4() +
-      s4() +
-      s4()
-    );
   }
 }
