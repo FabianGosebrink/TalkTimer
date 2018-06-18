@@ -6,12 +6,13 @@
     "start": "ng serve",
     "build": "ng build",
     "build-prod": "ng build --prod --output-path=\".dist/web\" --base-href ./",
-    "build-all": "npm run build-prod && npm run build-desktop",
+    "build-all": "npm run build-prod && npm run build-desktop && npm run zip-desktop",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prepare-desktop": "mkdirp ./.temp/desktop && ncp buildAssets/desktop .temp/desktop/ && ncp .dist/web .temp/desktop/ && rimraf .dist/desktop/",
-    "build-desktop": "npm run prepare-desktop && electron-packager .temp/desktop/ --electronVersion=2.0.0 --platform=win32,linux --out=./.dist/desktop/"
+    "build-desktop": "npm run prepare-desktop && electron-packager .temp/desktop/ --electronVersion=2.0.0 --platform=win32,linux --out=./.dist/desktop/",
+    "zip-desktop": "electron-installer-zip .dist/desktop/talktimer-win32-x64 .dist/desktop/talktimer-win32-x64.zip"
   },
   "private": true,
   "dependencies": {
@@ -35,15 +36,15 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^6.0.0",
     "@angular-devkit/build-angular": "~0.6.1",
-    "typescript": "~2.7.2",
     "@angular/cli": "~6.0.1",
+    "@angular/compiler-cli": "^6.0.0",
     "@angular/language-service": "^6.0.0",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
+    "electron-installer-zip": "^0.1.2",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -53,6 +54,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
-    "tslint": "~5.9.1"
+    "tslint": "~5.9.1",
+    "typescript": "~2.7.2"
   }
 }
