@@ -1,10 +1,15 @@
-const { app, BrowserWindow, globalShortcut } = require('electron');
+const { app, BrowserWindow, globalShortcut, powerSaveBlocker } = require('electron');
+
+const id = powerSaveBlocker.start('prevent-display-sleep')
+console.log(powerSaveBlocker.isStarted(id))
+
 
 let mainWindow = null;
 
 app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
     app.quit();
+    powerSaveBlocker.stop(id)
   }
 });
 
