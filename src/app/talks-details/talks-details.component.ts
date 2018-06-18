@@ -58,6 +58,8 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   resetTimers() {
     this.timerTickService.resetTimerTicks();
     this.setTotalTimeAndPercentage();
+    this.listOfObservables = [];
+    this.setInitialtimerTicksForTalk();
   }
 
   start() {

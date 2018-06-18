@@ -30,6 +30,9 @@ export class TalksOverviewComponent implements OnInit {
   }
 
   deleteTalk(talk: Talk, event: Event) {
+    if (!confirm('Really delete')) {
+      return;
+    }
     event.preventDefault();
     event.stopImmediatePropagation();
     this.talkStorageService.delete(talk);
