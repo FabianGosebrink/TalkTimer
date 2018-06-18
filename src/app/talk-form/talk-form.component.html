@@ -1,0 +1,27 @@
+<div>
+  <form (ngSubmit)="addTimer()" [formGroup]="form">
+    <div class="form-row align-items-center">
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInput">Topic</label>
+        <input type="text" formControlName="topic" class="form-control mb-2" id="inlineFormInput" placeholder="Topic">
+      </div>
+      <div class="col-auto">
+        <label class="sr-only" for="inlineFormInputGroup">Minutes</label>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">m</div>
+          </div>
+          <input type="text" formControlName="timeInMinutes" class="form-control" id="inlineFormInputGroup" placeholder="Time in minutes">
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-2">Add</button>
+      </div>
+    </div>
+  </form>
+</div>
+<p>
+  <button class="btn btn-success" (click)="startTimers()">Start Timers</button>
+  <button class="btn btn-secondary" (click)="resetTimers()">Reset Timers</button>
+</p>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { interval, merge, Subject } from 'rxjs';
-import { finalize, map, take, takeUntil, tap } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { finalize, takeUntil, tap } from 'rxjs/operators';
+import { TimerTickService } from './services/timer-tick.service';
 import { TimerTick } from './timerTick.model';
 import { TimerTickResult } from './timerTickResult.model';
 
@@ -12,56 +12,34 @@ import { TimerTickResult } from './timerTickResult.model';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  form: FormGroup;
   totalTime: number;
   timerStarted = false;
   destroy$ = new Subject();
 
-  listOfIntervals: TimerTick[] = [];
+  constructor(private readonly timerTickService: TimerTickService) {}
 
-  constructor() {}
+  ngOnInit() {}
 
-  ngOnInit() {
-    this.form = new FormGroup({
-      timeInMinutes: new FormControl('', Validators.required),
-      topic: new FormControl('', Validators.required)
-    });
-  }
-
-  addTimer() {
-    const completeTimeAlreadyAdded = this.getTotalTime();
-    const enteredValueInSeconds = +this.form.value.timeInMinutes * 60;
-    const secondsToAdd = completeTimeAlreadyAdded + enteredValueInSeconds;
-
-    const topic = this.form.value.topic || '';
-    const timerTick = new TimerTick(
-      topic,
-      secondsToAdd * 1000,
-      enteredValueInSeconds
-    );
-    this.listOfIntervals.push(timerTick);
-    this.totalTime = this.getTotalTime();
-    this.form.reset();
+  intervalAdded(timerTick: TimerTick) {
+    this.timerTickService.addTimerTick(timerTick);
+    this.totalTime = this.timerTickService.getTotalTime();
   }
 
   deleteTimer(timerTick: TimerTick) {
-    this.listOfIntervals = this.listOfIntervals.filter(
-      item => item.id !== timerTick.id
-    );
-    this.totalTime = this.getTotalTime();
+    this.timerTickService.deleteTimerTick(timerTick);
+    this.totalTime = this.timerTickService.getTotalTime();
   }
 
   resetTimers() {
-    this.listOfIntervals = [];
-    this.form.reset();
-    this.totalTime = this.getTotalTime();
+    this.timerTickService.resetTimerTicks();
+    this.totalTime = this.timerTickService.getTotalTime();
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 
   start() {
-    const listOfObservables = this.listOfIntervals.map(item =>
-      this.createInterval(item)
+    const listOfObservables = this.timerTickService.listOfIntervals.map(item =>
+      this.timerTickService.createInterval(item)
     );
 
     merge(...listOfObservables)
@@ -71,61 +49,13 @@ export class AppComponent implements OnInit {
         takeUntil(this.destroy$)
       )
       .subscribe((result: TimerTickResult) => {
-        const currentTimerTick = this.getTimerTickById(result.id);
+        const currentTimerTick = this.timerTickService.getTimerTickById(
+          result.id
+        );
         currentTimerTick.secondsLeft = result.secondsLeft;
 
-        const currentActiveTimerTick = this.getCurrentActiveTimerTick();
-        this.activateTimerTick(currentActiveTimerTick);
+        const currentActiveTimerTick = this.timerTickService.getCurrentActiveTimerTick();
+        this.timerTickService.activateTimerTick(currentActiveTimerTick);
       });
-  }
-
-  private getTimerTickById(id: string) {
-    return this.listOfIntervals.find(item => item.id === id);
-  }
-
-  private activateTimerTick(currentActiveTimerTick: TimerTick) {
-    this.setAllTimerTicksToInactive();
-
-    if (!!currentActiveTimerTick) {
-      this.listOfIntervals.map(item => {
-        if (item.id === currentActiveTimerTick.id) {
-          item.currentActive = true;
-        }
-      });
-    }
-  }
-
-  private setAllTimerTicksToInactive() {
-    this.listOfIntervals.forEach(item => {
-      item.currentActive = false;
-    });
-  }
-
-  private getCurrentActiveTimerTick() {
-    return this.listOfIntervals
-      .filter(item => !item.finished)
-      .sort((obj1: TimerTick, obj2: TimerTick) => {
-        return obj1.secondsLeft - obj2.secondsLeft;
-      })[0];
-  }
-
-  private createInterval(timerTick: TimerTick) {
-    const toReturn = interval(1000).pipe(
-      take(timerTick.seconds + 1),
-      map(i => {
-        const secondsLeft = timerTick.seconds - i;
-        return new TimerTickResult(timerTick.id, secondsLeft);
-      })
-    );
-    return toReturn;
-  }
-
-  private getTotalTime() {
-    let totalTime = 0;
-    this.listOfIntervals.forEach(element => {
-      totalTime += element.intervalSeconds;
-    });
-
-    return totalTime;
   }
 }
