@@ -13,12 +13,12 @@ export class TimerTick {
 
   get timeLeft() {
     const duration = moment.duration(this.secondsLeft, 'seconds');
-    return moment.utc(duration.asMilliseconds()).format('mm:ss');
+    return moment.utc(duration.asMilliseconds()).format('HH:mm:ss');
   }
 
   get intervalTime() {
     const duration = moment.duration(this.intervalSeconds, 'seconds');
-    return moment.utc(duration.asMilliseconds()).format('mm:ss');
+    return moment.utc(duration.asMilliseconds()).format('HH:mm:ss');
   }
 
   get secondsRan() {
