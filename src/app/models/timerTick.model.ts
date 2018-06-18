@@ -1,10 +1,7 @@
 import * as moment from 'moment';
 
 export class TimerTick {
-  private _id: string;
-  public get id() {
-    return this._id;
-  }
+  readonly id: string;
 
   get finished() {
     return this.secondsLeft === 0;
@@ -38,7 +35,7 @@ export class TimerTick {
   currentActive = false;
 
   constructor(public topic: string, public intervalSeconds: number) {
-    this._id = this.createGuid();
+    this.id = this.createGuid();
     this.secondsLeft = intervalSeconds;
   }
 

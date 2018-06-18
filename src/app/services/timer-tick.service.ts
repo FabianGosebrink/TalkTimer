@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickStorageService } from './timer-tick-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,12 @@ export class TimerTickService {
 
   get listOfIntervals() {
     return this.listOfIntervalsInternal;
+  }
+
+  constructor(
+    private readonly timerTickStorageService: TimerTickStorageService
+  ) {
+    this.listOfIntervalsInternal = timerTickStorageService.getAll();
   }
 
   addTimerTick(timerTick: TimerTick) {
@@ -38,7 +45,13 @@ export class TimerTickService {
 
   getTotalPercentage() {
     const totalTime = this.getTotalTime();
+
+    if (totalTime === 0) {
+      return 0;
+    }
+
     const allSecondsLeft = this.getAllSecondsLeft();
+
     const percentage = (100 / totalTime) * allSecondsLeft;
     return percentage;
   }
