@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { finalize, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+import { TimerTick } from './models/timerTick.model';
 import { TimerTickService } from './services/timer-tick.service';
-import { TimerTick } from './timerTick.model';
-import { TimerTickResult } from './timerTickResult.model';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +10,11 @@ import { TimerTickResult } from './timerTickResult.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  private startIndex = 0;
   title = 'app';
   totalTime: number;
-  timerStarted = false;
-  destroy$ = new Subject();
+  talkIsRunning = false;
+  private listOfObservables: Observable<TimerTick>[] = [];
 
   constructor(private readonly timerTickService: TimerTickService) {}
 
@@ -33,29 +33,40 @@ export class AppComponent implements OnInit {
   resetTimers() {
     this.timerTickService.resetTimerTicks();
     this.totalTime = this.timerTickService.getTotalTime();
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
   }
 
   start() {
-    const listOfObservables = this.timerTickService.listOfIntervals.map(item =>
+    this.listOfObservables = this.timerTickService.listOfIntervals.map(item =>
       this.timerTickService.createInterval(item)
     );
 
-    merge(...listOfObservables)
-      .pipe(
-        tap(() => (this.timerStarted = true)),
-        finalize(() => (this.timerStarted = false)),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((result: TimerTickResult) => {
-        const currentTimerTick = this.timerTickService.getTimerTickById(
-          result.id
-        );
-        currentTimerTick.secondsLeft = result.secondsLeft;
+    this.talkIsRunning = true;
 
-        const currentActiveTimerTick = this.timerTickService.getCurrentActiveTimerTick();
-        this.timerTickService.activateTimerTick(currentActiveTimerTick);
+    this.startTimer(this.startIndex);
+  }
+
+  private startTimer(index: number) {
+    if (!this.timerTickService.listOfIntervals[index]) {
+      this.talkIsRunning = false;
+      return;
+    }
+
+    const currentObservable = this.listOfObservables[index];
+
+    currentObservable
+      .pipe(
+        tap((currentTimerTick: TimerTick) => {
+          currentTimerTick.currentActive = true;
+        }),
+        finalize(() => {
+          const newIndex = index + 1;
+          this.startTimer(newIndex);
+        })
+      )
+      .subscribe((currentTimerTick: TimerTick) => {
+        if (currentTimerTick.secondsLeft === 0) {
+          currentTimerTick.currentActive = false;
+        }
       });
   }
 }

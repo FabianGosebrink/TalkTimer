@@ -6,10 +6,6 @@ export class TimerTick {
     return this._id;
   }
 
-  public get seconds() {
-    return this.nextTimerEndinMilliseconds / 1000;
-  }
-
   public get finished() {
     return this.secondsLeft === 0;
   }
@@ -33,17 +29,13 @@ export class TimerTick {
     const seconds = Math.round(this.intervalSeconds - this.secondsLeft) || 0;
 
     const duration = moment.duration(seconds, 'seconds');
-    return duration;
+    return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
   public secondsLeft = 0;
   public currentActive = false;
 
-  constructor(
-    public topic: string,
-    public nextTimerEndinMilliseconds: number,
-    public intervalSeconds: number
-  ) {
+  constructor(public topic: string, public intervalSeconds: number) {
     this._id = this.createGuid();
   }
 

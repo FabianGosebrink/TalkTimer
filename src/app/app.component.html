@@ -8,30 +8,9 @@
       <div class="container">
         <app-talk-form (intervalAdded)="intervalAdded($event)" (start)="start()" (reset)="resetTimers()"></app-talk-form>
 
-        <div>
-          <h5>{{(totalTime / 60) || 0}} total minutes</h5>
-        </div>
+        <app-total-time [totalTime]="totalTime"></app-total-time>
 
-        <h1 class="display-4">Parts of your talk:</h1>
-
-        <ul style="list-style-type: none;">
-          <li *ngFor="let item of timerTickService.listOfIntervals; let i = index">
-            <h3 *ngIf="!item.currentActive" style="color: grey; ">{{item.topic}}</h3>
-            <h1 class="display-2" *ngIf="item.currentActive">{{item.topic}}
-              <small class="text-muted">{{item.secondsRan}} s</small>
-            </h1>
-            <div class="progress" *ngIf="item.currentActive">
-              <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': item.percentage + '%'}">
-                {{item.percentage}}%
-              </div>
-            </div>
-            <span *ngIf="!item.currentActive" style="color: grey; ">Minutes: {{item.intervalMinutes}}
-            </span>
-            <h2 *ngIf="item.currentActive" style="font-weight: bold; ">Minutes left: {{item.minutesLeft}}
-            </h2>
-            <button (click)="deleteTimer(item)" class="btn btn-danger btn-sm" *ngIf="!timerStarted">Delete Timer</button>
-          </li>
-        </ul>
+        <app-talk-part-list [listOfIntervals]="timerTickService.listOfIntervals" [talkIsRunning]="talkIsRunning" (deleteTimer)="deleteTimer($event)"></app-talk-part-list>
 
       </div>
     </div>
@@ -40,7 +19,6 @@
 </main>
 
 <footer class="text-muted ">
-  <div class="container ">
-
+  <div class="container">
   </div>
 </footer>
