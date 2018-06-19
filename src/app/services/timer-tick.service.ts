@@ -57,7 +57,11 @@ export class TimerTickService {
     return percentage;
   }
 
-  createInterval(timerTick: TimerTick) {
+  getAllIntervalls() {
+    return this.listOfIntervalsInternal.map(item => this.createInterval(item));
+  }
+
+  private createInterval(timerTick: TimerTick) {
     const toReturn = interval(1000).pipe(
       take(timerTick.intervalSeconds + 1),
       map(i => {

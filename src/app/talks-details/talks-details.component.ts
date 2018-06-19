@@ -22,7 +22,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   totalTime: number;
   totalPercentage: number;
   talkIsRunning = false;
-  private listOfObservables: Observable<TimerTick>[] = [];
+  private timers: Observable<TimerTick>[] = [];
   private startIndex = 0;
   private destroy$ = new Subject();
 
@@ -67,15 +67,13 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   resetTimers() {
     this.fireDestroy();
     this.timerTickService.resetTimerTicks();
-    this.listOfObservables = [];
+    this.timers = [];
     this.setInitialtimerTicksForTalk();
     this.talkIsRunning = false;
   }
 
   start() {
-    this.listOfObservables = this.timerTickService.listOfIntervals.map(item =>
-      this.timerTickService.createInterval(item)
-    );
+    this.timers = this.timerTickService.getAllIntervalls();
 
     this.talkIsRunning = true;
 
@@ -93,7 +91,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const currentObservable = this.listOfObservables[index];
+    const currentObservable = this.timers[index];
 
     currentObservable
       .pipe(
