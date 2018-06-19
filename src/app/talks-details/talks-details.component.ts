@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {
+  ScrollToConfigOptions,
+  ScrollToService
+} from '@nicky-lenaers/ngx-scroll-to';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { Talk } from '../models/talk.model';
@@ -25,7 +29,8 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     public readonly timerTickService: TimerTickService,
-    private readonly talkStorageService: TalkStorageService
+    private readonly talkStorageService: TalkStorageService,
+    private readonly scrollToService: ScrollToService
   ) {}
 
   ngOnInit() {
@@ -84,7 +89,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
 
   private startTimer(index: number) {
     if (!this.timerTickService.listOfIntervals[index]) {
-      this.talkIsRunning = false;
+      this.resetTimers();
       return;
     }
 
@@ -108,13 +113,20 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
 
         if (currentTimerTick.secondsLeft === 0) {
           currentTimerTick.currentActive = false;
+          this.triggerScrollTo(currentTimerTick.id);
         }
       });
   }
 
-  private fireDestroy(){
+  private fireDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
     this.destroy$ = new Subject();
+  }
+
+  private triggerScrollTo(id: string) {
+    const config: ScrollToConfigOptions = { target: id };
+
+    this.scrollToService.scrollTo(config);
   }
 }

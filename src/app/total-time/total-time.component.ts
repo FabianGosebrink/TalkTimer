@@ -1,4 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Directive,
+  ElementRef,
+  Input,
+  OnInit
+} from '@angular/core';
+import * as stickfill from 'stickyfilljs';
 
 @Component({
   selector: 'app-total-time',
@@ -11,4 +19,15 @@ export class TotalTimeComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+}
+
+@Directive({
+  selector: '[appStickyPolyfill]'
+})
+export class StickyPolyFillDirective implements AfterViewInit {
+  constructor(private elementRef: ElementRef) {}
+
+  ngAfterViewInit() {
+    stickfill.addOne(this.elementRef.nativeElement);
+  }
 }
