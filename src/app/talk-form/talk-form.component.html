@@ -16,12 +16,12 @@
       </div>
 
       <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-2" [disabled]="!form.valid">Add</button>
+        <button type="submit" class="btn btn-primary mb-2" [disabled]="!form.valid || timerStarted">Add</button>
       </div>
     </div>
   </form>
   <p>
-    <button class="btn btn-success space" (click)="startTimers()">Start Timers</button>
+    <button class="btn btn-success space" (click)="startTimers()" [disabled]="timerStarted">Start Timers</button>
     <button class="btn btn-secondary" (click)="resetTimers()">Reset Timers</button>
   </p>
 </div>

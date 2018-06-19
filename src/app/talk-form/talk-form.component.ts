@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TimerTick } from '../models/timerTick.model';
 
@@ -8,6 +8,7 @@ import { TimerTick } from '../models/timerTick.model';
   styleUrls: ['./talk-form.component.css']
 })
 export class TalkFormComponent implements OnInit {
+  @Input() timerStarted = false;
   @Output() intervalAdded = new EventEmitter();
   @Output() start = new EventEmitter();
   @Output() reset = new EventEmitter();

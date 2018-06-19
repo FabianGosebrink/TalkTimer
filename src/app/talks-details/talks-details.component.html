@@ -7,7 +7,7 @@
           <a [routerLink]="['/overview/']">go back</a>
         </small>
       </h3>
-      <app-talk-form (intervalAdded)="intervalAdded($event)" (start)="start()" (reset)="resetTimers()"></app-talk-form>
+      <app-talk-form [timerStarted]="talkIsRunning" (intervalAdded)="intervalAdded($event)" (start)="start()" (reset)="resetTimers()"></app-talk-form>
 
       <app-total-time [totalTime]="totalTime" [totalPercentage]="totalPercentage"></app-total-time>
 

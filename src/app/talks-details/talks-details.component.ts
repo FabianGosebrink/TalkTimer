@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { Talk } from '../models/talk.model';
 import { TimerTick } from '../models/timerTick.model';
 import { TalkStorageService } from '../services/talk-storage.service';
@@ -20,6 +20,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   talkIsRunning = false;
   private listOfObservables: Observable<TimerTick>[] = [];
   private startIndex = 0;
+  private destroy$ = new Subject();
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -28,17 +29,18 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.params['talkId'];
-    this.selectedTalk = this.talkStorageService.getSingle(id);
     this.setInitialtimerTicksForTalk();
   }
 
   private setInitialtimerTicksForTalk() {
+    const id = this.activatedRoute.snapshot.params['talkId'];
+    this.selectedTalk = this.talkStorageService.getSingle(id);
     this.selectedTalk.timerTicks.forEach(timerTick => {
       const toAdd = new TimerTick(timerTick.topic, timerTick.intervalSeconds);
       toAdd.id = timerTick.id;
       this.timerTickService.addTimerTick(toAdd);
     });
+    this.setTotalTimeAndPercentage();
   }
 
   ngOnDestroy(): void {
@@ -58,10 +60,11 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   }
 
   resetTimers() {
+    this.fireDestroy();
     this.timerTickService.resetTimerTicks();
-    this.setTotalTimeAndPercentage();
     this.listOfObservables = [];
     this.setInitialtimerTicksForTalk();
+    this.talkIsRunning = false;
   }
 
   start() {
@@ -95,7 +98,8 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
         finalize(() => {
           const newIndex = index + 1;
           this.startTimer(newIndex);
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe((currentTimerTick: TimerTick) => {
         this.totalPercentage = Math.round(
@@ -106,5 +110,11 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
           currentTimerTick.currentActive = false;
         }
       });
+  }
+
+  private fireDestroy(){
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.destroy$ = new Subject();
   }
 }
