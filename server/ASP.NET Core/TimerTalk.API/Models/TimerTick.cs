@@ -4,7 +4,7 @@ namespace TimerTalk.API.Models
 {
     public class TimerTick
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Topic { get; set; }
         public int intervalSeconds { get; set; }
         public int secondsLeft { get; set; }

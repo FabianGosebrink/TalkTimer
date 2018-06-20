@@ -17,7 +17,7 @@ import { TimerTickService } from '../services/timer-tick.service';
   styleUrls: ['./talks-details.component.css']
 })
 export class TalksDetailsComponent implements OnInit, OnDestroy {
-  selectedTalk: Talk;
+  selectedTalk: Observable<Talk>;
 
   totalTime: number;
   totalPercentage: number;
@@ -40,12 +40,19 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   private setInitialtimerTicksForTalk() {
     const id = this.activatedRoute.snapshot.params['talkId'];
     this.selectedTalk = this.talkStorageService.getSingle(id);
-    this.selectedTalk.timerTicks.forEach(timerTick => {
-      const toAdd = new TimerTick(timerTick.topic, timerTick.intervalSeconds);
-      toAdd.id = timerTick.id;
-      this.timerTickService.addTimerTick(toAdd);
-    });
-    this.setTotalTimeAndPercentage();
+    this.talkStorageService
+      .getAllTimerTicks(id)
+      .subscribe((result: TimerTick[]) => {
+        result.forEach(timerTick => {
+          const toAdd = new TimerTick(
+            timerTick.topic,
+            timerTick.intervalSeconds
+          );
+          toAdd.id = timerTick.id;
+          this.timerTickService.addTimerTick(toAdd);
+        });
+        this.setTotalTimeAndPercentage();
+      });
   }
 
   ngOnDestroy(): void {
@@ -53,15 +60,19 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   }
 
   intervalAdded(timerTick: TimerTick) {
-    this.timerTickService.addTimerTick(timerTick);
-    this.setTotalTimeAndPercentage();
-    this.talkStorageService.addToTalk(this.selectedTalk, timerTick);
+    const talkId = this.activatedRoute.snapshot.params['talkId'];
+    this.talkStorageService.addToTalk(talkId, timerTick).subscribe(() => {
+      this.timerTickService.addTimerTick(timerTick);
+      this.setTotalTimeAndPercentage();
+    });
   }
 
   deleteTimer(timerTick: TimerTick) {
-    this.timerTickService.deleteTimerTick(timerTick);
-    this.setTotalTimeAndPercentage();
-    this.talkStorageService.deleteFromTalk(this.selectedTalk, timerTick);
+    const talkId = this.activatedRoute.snapshot.params['talkId'];
+    this.talkStorageService.deleteFromTalk(talkId, timerTick).subscribe(() => {
+      this.timerTickService.deleteTimerTick(timerTick);
+      this.setTotalTimeAndPercentage();
+    });
   }
 
   resetTimers() {

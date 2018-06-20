@@ -26,7 +26,7 @@ namespace TimerTalk.API.Repositories
             return _timerTalkContext.TimerTicks.Count();
         }
 
-        public void Delete(Guid id)
+        public void Delete(int id)
         {
             TimerTick toRemove = GetSingle(id);
             _timerTalkContext.TimerTicks.Remove(toRemove);
@@ -37,7 +37,7 @@ namespace TimerTalk.API.Repositories
             return _timerTalkContext.TimerTicks;
         }
 
-        public TimerTick GetSingle(Guid id)
+        public TimerTick GetSingle(int id)
         {
             return _timerTalkContext.TimerTicks.FirstOrDefault(x => x.Id == id);
         }

@@ -1,4 +1,4 @@
-﻿namespace TimerTalk.API
+﻿namespace TimerTalk.API.Dto
 {
     public class TimerTickUpdateDto
     {

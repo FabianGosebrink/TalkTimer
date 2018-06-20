@@ -8,9 +8,9 @@ namespace TimerTalk.API.Repositories
     {
         void Add(TimerTick item);
         int Count();
-        void Delete(Guid id);
+        void Delete(int id);
         IQueryable<TimerTick> GetAll();
-        TimerTick GetSingle(Guid id);
+        TimerTick GetSingle(int id);
         bool Save();
         void Update(TimerTick item);
     }

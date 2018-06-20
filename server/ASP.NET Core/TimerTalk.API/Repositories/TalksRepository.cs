@@ -16,7 +16,7 @@ namespace TimerTalk.API.Repositories
             _timerTalkContext = timerTalkContext;
         }
 
-        public Talk GetSingle(Guid id)
+        public Talk GetSingle(int id)
         {
             return _timerTalkContext.Talks.FirstOrDefault(x => x.Id == id);
         }
@@ -26,7 +26,7 @@ namespace TimerTalk.API.Repositories
             _timerTalkContext.Talks.Add(item);
         }
 
-        public void Delete(Guid id)
+        public void Delete(int id)
         {
             Talk item = GetSingle(id);
             _timerTalkContext.Talks.Remove(item);

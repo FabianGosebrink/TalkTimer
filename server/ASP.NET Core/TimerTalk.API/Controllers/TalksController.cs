@@ -62,7 +62,7 @@ namespace TimerTalk.API.Controllers
 
         [HttpGet]
         [Route("{id}", Name = nameof(GetSingle))]
-        public IActionResult GetSingle(Guid id)
+        public IActionResult GetSingle(int id)
         {
             Talk talk = _talksRepository.GetSingle(id);
 
@@ -76,7 +76,7 @@ namespace TimerTalk.API.Controllers
 
         [HttpDelete]
         [Route("{id}", Name = nameof(Remove))]
-        public IActionResult Remove(Guid id)
+        public IActionResult Remove(int id)
         {
             Talk talk = _talksRepository.GetSingle(id);
 
@@ -97,7 +97,7 @@ namespace TimerTalk.API.Controllers
 
         [HttpPut]
         [Route("{id}", Name = nameof(Update))]
-        public IActionResult Update(Guid id, [FromBody]TalkUpdateDto talkUpdateDto)
+        public IActionResult Update(int id, [FromBody]TalkUpdateDto talkUpdateDto)
         {
             if (talkUpdateDto == null)
             {

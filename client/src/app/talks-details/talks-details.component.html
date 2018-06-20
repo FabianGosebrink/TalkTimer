@@ -2,7 +2,7 @@
 
   <div class="album py-5 bg-light">
     <div class="container">
-      <h3 class=" space-bottom">{{selectedTalk.name}}
+      <h3 class=" space-bottom">{{(selectedTalk|async)?.name}}
         <small class="text-muted">
           <a [routerLink]="['/overview/']">go back</a>
         </small>

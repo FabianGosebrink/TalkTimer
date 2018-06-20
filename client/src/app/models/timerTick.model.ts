@@ -1,5 +1,4 @@
 import * as moment from 'moment';
-import { Guid } from '../services/guid.service';
 
 export class TimerTick {
   id: string;
@@ -35,7 +34,6 @@ export class TimerTick {
   currentActive = false;
 
   constructor(public topic: string, public intervalSeconds: number) {
-    this.id = Guid.MakeNew().ToString();
     this.secondsLeft = intervalSeconds;
   }
 }

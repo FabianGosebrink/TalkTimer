@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -10,10 +11,7 @@ import { TalkFormComponent } from './talk-form/talk-form.component';
 import { TalkPartListComponent } from './talk-part-list/talk-part-list.component';
 import { TalksDetailsComponent } from './talks-details/talks-details.component';
 import { TalksOverviewComponent } from './talks-overview/talks-overview.component';
-import {
-  StickyPolyFillDirective,
-  TotalTimeComponent
-} from './total-time/total-time.component';
+import { StickyPolyFillDirective, TotalTimeComponent } from './total-time/total-time.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +26,7 @@ import {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot(AppRoutes, {
       useHash: true,

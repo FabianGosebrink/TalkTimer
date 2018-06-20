@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { TimerTick } from '../models/timerTick.model';
-import { TalkStorageService } from './talk-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +11,6 @@ export class TimerTickService {
 
   get listOfIntervals() {
     return this.listOfIntervalsInternal;
-  }
-
-  constructor(private readonly talkStorageService: TalkStorageService) {
-    // this.listOfIntervalsInternal = talkStorageService.getAll();
   }
 
   addTimerTick(timerTick: TimerTick) {

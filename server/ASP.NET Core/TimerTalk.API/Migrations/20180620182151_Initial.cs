@@ -11,7 +11,8 @@ namespace TimerTalk.API.Migrations
                 name: "Talks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Added = table.Column<DateTime>(nullable: false)
                 },
@@ -24,28 +25,28 @@ namespace TimerTalk.API.Migrations
                 name: "TimerTicks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Topic = table.Column<string>(nullable: true),
                     intervalSeconds = table.Column<int>(nullable: false),
                     secondsLeft = table.Column<int>(nullable: false),
-                    TalkId = table.Column<int>(nullable: false),
-                    TalkId1 = table.Column<Guid>(nullable: true)
+                    TalkId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TimerTicks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimerTicks_Talks_TalkId1",
-                        column: x => x.TalkId1,
+                        name: "FK_TimerTicks_Talks_TalkId",
+                        column: x => x.TalkId,
                         principalTable: "Talks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TimerTicks_TalkId1",
+                name: "IX_TimerTicks_TalkId",
                 table: "TimerTicks",
-                column: "TalkId1");
+                column: "TalkId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

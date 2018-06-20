@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { Talk } from '../models/talk.model';
 import { TalkStorageService } from '../services/talk-storage.service';
 
@@ -10,7 +12,7 @@ import { TalkStorageService } from '../services/talk-storage.service';
 })
 export class TalksOverviewComponent implements OnInit {
   form: FormGroup;
-  talks: Talk[] = [];
+  talks: Observable<Talk[]>;
   constructor(private readonly talkStorageService: TalkStorageService) {}
 
   ngOnInit() {
@@ -24,9 +26,10 @@ export class TalksOverviewComponent implements OnInit {
   addTalk() {
     const talkName = this.form.value.talkName;
     const toSave = new Talk(talkName);
-    this.talkStorageService.add(toSave);
-    this.talks = this.talkStorageService.getAll();
-    this.form.reset();
+    this.talks = this.talkStorageService.add(toSave).pipe(
+      tap(() => this.form.reset()),
+      switchMap(() => this.talkStorageService.getAll())
+    );
   }
 
   deleteTalk(talk: Talk, event: Event) {
@@ -36,6 +39,9 @@ export class TalksOverviewComponent implements OnInit {
     event.preventDefault();
     event.stopImmediatePropagation();
     this.talkStorageService.delete(talk);
-    this.talks = this.talkStorageService.getAll();
+
+    this.talks = this.talkStorageService
+      .delete(talk)
+      .pipe(switchMap(() => this.talkStorageService.getAll()));
   }
 }

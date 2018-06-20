@@ -3,9 +3,9 @@ using System;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TimerTalk.API.Repositories;
 using TimerTalk.API.Models;
+using TimerTalk.API.Dto;
 
 namespace TimerTalk.API.Controllers
 {
@@ -23,9 +23,9 @@ namespace TimerTalk.API.Controllers
 
         // GET api/food/{foodId}/ingredients
         [HttpGet]
-        public IActionResult GetTimerTicksForTalk(Guid talkId)
+        public IActionResult GetTimerTicksForTalk(int talkId)
         {
-            if (_timerTicksRepository.GetSingle(talkId) == null)
+            if (_talksRepository.GetSingle(talkId) == null)
             {
                 return NotFound();
             }
@@ -35,8 +35,8 @@ namespace TimerTalk.API.Controllers
                 .Where(x => x.Talk.Id == talkId)
                 .ToList();
 
-            IEnumerable<TimerTickDto> viewModels = allItems
-               .Select(x => Mapper.Map<TimerTickDto>(x));
+            var viewModels = allItems
+               .Select(x => Mapper.Map<TimerTickDto>(x)).ToList();
 
             return Ok(viewModels);
         }
@@ -44,16 +44,16 @@ namespace TimerTalk.API.Controllers
         // GET api/food/6/ingredients/3
         [HttpGet]
         [Route("{id}", Name = nameof(GetSingleTimerTicks))]
-        public IActionResult GetSingleTimerTicks(Guid foodId, Guid id)
+        public IActionResult GetSingleTimerTicks(int talkId, int id)
         {
-            if (_timerTicksRepository.GetSingle(foodId) == null)
+            if (_timerTicksRepository.GetSingle(talkId) == null)
             {
                 return NotFound();
             }
 
             var singleItem = _timerTicksRepository
                 .GetAll()
-                .Where(x => x.Talk.Id == foodId && x.Id == id)
+                .Where(x => x.Talk.Id == talkId && x.Id == id)
                 .FirstOrDefault();
 
             if (singleItem == null)
@@ -66,7 +66,7 @@ namespace TimerTalk.API.Controllers
 
         // POST api/food/6/ingredients
         [HttpPost]
-        public IActionResult AddIngredientToFood(Guid talkId, [FromBody] TimerTickCreateDto timertickCreateDto)
+        public IActionResult AddTimerTickToTalk(int talkId, [FromBody] TimerTickCreateDto timertickCreateDto)
         {
             if (timertickCreateDto == null)
             {
@@ -103,7 +103,7 @@ namespace TimerTalk.API.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult UpdateTimerTickForTalk(Guid talkId, Guid id, [FromBody] TimerTickUpdateDto timerTickUpdateDto)
+        public IActionResult UpdateTimerTickForTalk(int talkId, int id, [FromBody] TimerTickUpdateDto timerTickUpdateDto)
         {
             if (timerTickUpdateDto == null)
             {
@@ -144,7 +144,7 @@ namespace TimerTalk.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Remove(Guid talkId, Guid id)
+        public IActionResult Remove(int talkId, int id)
         {
             var item = _talksRepository.GetSingle(talkId);
 

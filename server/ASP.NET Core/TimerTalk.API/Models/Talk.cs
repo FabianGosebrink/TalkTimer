@@ -5,7 +5,7 @@ namespace TimerTalk.API.Models
 {
     public class Talk
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Added { get; set; }
 

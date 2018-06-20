@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Talk } from '../models/talk.model';
 import { TimerTick } from '../models/timerTick.model';
 
@@ -6,80 +8,54 @@ import { TimerTick } from '../models/timerTick.model';
   providedIn: 'root'
 })
 export class TalkStorageService {
-  private PREFIX = 'TALK_TIMER';
-  constructor() {}
+  private readonly actionUrl: string;
+  private readonly talkEndpoint = 'talks/';
+  private readonly timerTickEndpoint = 'timerticks/';
+
+  constructor(private readonly http: HttpClient) {
+    this.actionUrl = environment.server + environment.apiUrl;
+  }
 
   add(talk: Talk) {
-    const allExisting = this.getAll();
-    allExisting.push(talk);
-    localStorage.setItem(`${this.PREFIX}`, JSON.stringify(allExisting));
+    return this.http.post<Talk>(this.actionUrl + this.talkEndpoint, talk);
   }
 
   update(updatedTalk: Talk) {
-    const allExisting = this.getAll();
-
-    const existingTalk = allExisting.find(item => item.id === updatedTalk.id);
-
-    if (!existingTalk) {
-      return;
-    }
-    const allOthers = allExisting.filter(item => item.id !== updatedTalk.id);
-
-    this.clearStorage();
-    const allnew = [...allOthers, ...[updatedTalk]];
-    localStorage.setItem(`${this.PREFIX}`, JSON.stringify(allnew));
+    return this.http.put<Talk>(this.actionUrl + this.talkEndpoint, updatedTalk);
   }
 
-  addToTalk(talk: Talk, timerTick: TimerTick) {
-    const alltalks = this.getAll();
-    const talky = alltalks.find(existingTalk => existingTalk.id === talk.id);
-    talky.timerTicks.push(timerTick);
-    this.update(talky);
-  }
-
-  deleteFromTalk(talk: Talk, timerTick: TimerTick) {
-    const allExisting = this.getAll();
-
-    const existingTalk = allExisting.find(item => item.id === talk.id);
-
-    if (!existingTalk) {
-      return;
-    }
-    const allOtherTimeTicks = existingTalk.timerTicks.filter(
-      item => item.id !== timerTick.id
+  addToTalk(talkId: string, timerTick: TimerTick) {
+    return this.http.post<TimerTick>(
+      `${this.actionUrl}${this.talkEndpoint}${talkId}/${
+        this.timerTickEndpoint
+      }`,
+      timerTick
     );
-    existingTalk.timerTicks = [...allOtherTimeTicks];
-    this.update(existingTalk);
   }
 
-  saveMany(talks: Talk[]) {
-    const existing = this.getAll();
-
-    talks.forEach(timerTick => {
-      existing.push(timerTick);
-    });
-
-    localStorage.setItem(`${this.PREFIX}`, JSON.stringify(existing));
+  deleteFromTalk(talkId: string, timerTick: TimerTick) {
+    return this.http.delete(
+      `${this.actionUrl}${this.talkEndpoint}${talkId}/${
+        this.timerTickEndpoint
+      }${timerTick.id}`
+    );
   }
 
   delete(talk: Talk) {
-    let existing = this.getAll();
-    this.clearStorage();
-    existing = existing.filter(t => t.id !== talk.id);
-    this.saveMany(existing);
+    return this.http.delete(`${this.actionUrl}${this.talkEndpoint}${talk.id}`);
   }
 
   getAll() {
-    const items = localStorage.getItem(`${this.PREFIX}`) || '[]';
-    return JSON.parse(items) as Talk[];
+    return this.http.get<Talk[]>(this.actionUrl + this.talkEndpoint);
+  }
+
+  getAllTimerTicks(talkId: string) {
+    return this.http.get<TimerTick[]>(
+      `${this.actionUrl}${this.talkEndpoint}${talkId}/${this.timerTickEndpoint}`
+    );
   }
 
   getSingle(id: string) {
-    const items = localStorage.getItem(`${this.PREFIX}`) || '[]';
-    return (JSON.parse(items) as Talk[]).find(item => item.id === id);
-  }
-
-  private clearStorage() {
-    localStorage.removeItem(`${this.PREFIX}`);
+    return this.http.get<Talk>(`${this.actionUrl}${this.talkEndpoint}${id}`);
   }
 }

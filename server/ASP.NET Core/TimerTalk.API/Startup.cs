@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TimerTalk.API.Context;
+using TimerTalk.API.Dto;
 using TimerTalk.API.Models;
 using TimerTalk.API.Repositories;
 
@@ -34,6 +35,14 @@ namespace TimerTalk.API
             services.AddScoped<ITalksRepository, TalksRepository>();
             services.AddScoped<ITimerTickRepository, TimerTickRepository>();
 
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowCredentials();
+                }));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -52,9 +61,13 @@ namespace TimerTalk.API
             AutoMapper.Mapper.Initialize(mapper =>
             {
                 mapper.CreateMap<Talk, TalkDto>().ReverseMap();
+                mapper.CreateMap<Talk, TalkCreateDto>().ReverseMap();
+                mapper.CreateMap<Talk, TalkUpdateDto>().ReverseMap();
+                mapper.CreateMap<TimerTick, TimerTickCreateDto>().ReverseMap();
                 mapper.CreateMap<TimerTick, TimerTickDto>().ReverseMap();
+                mapper.CreateMap<TimerTick, TimerTickUpdateDto>().ReverseMap();
             });
-
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseMvc();

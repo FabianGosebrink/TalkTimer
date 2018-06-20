@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  server: 'https://food-api-core.azurewebsites.net/',
+  apiUrl: 'api/'
 };

@@ -16,9 +16,9 @@ namespace TimerTalk.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.0-rtm-30799");
 
-            modelBuilder.Entity("TimerTalk.API.Context.Talk", b =>
+            modelBuilder.Entity("TimerTalk.API.Models.Talk", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("Added");
@@ -30,14 +30,12 @@ namespace TimerTalk.API.Migrations
                     b.ToTable("Talks");
                 });
 
-            modelBuilder.Entity("TimerTalk.API.Context.TimerTick", b =>
+            modelBuilder.Entity("TimerTalk.API.Models.TimerTick", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("TalkId");
-
-                    b.Property<Guid?>("TalkId1");
 
                     b.Property<string>("Topic");
 
@@ -47,16 +45,17 @@ namespace TimerTalk.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TalkId1");
+                    b.HasIndex("TalkId");
 
                     b.ToTable("TimerTicks");
                 });
 
-            modelBuilder.Entity("TimerTalk.API.Context.TimerTick", b =>
+            modelBuilder.Entity("TimerTalk.API.Models.TimerTick", b =>
                 {
-                    b.HasOne("TimerTalk.API.Context.Talk", "Talk")
+                    b.HasOne("TimerTalk.API.Models.Talk", "Talk")
                         .WithMany("TimerTicks")
-                        .HasForeignKey("TalkId1");
+                        .HasForeignKey("TalkId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

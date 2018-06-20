@@ -9,9 +9,9 @@ namespace TimerTalk.API.Repositories
     {
         void Add(Talk item);
         int Count();
-        void Delete(Guid id);
+        void Delete(int id);
         IQueryable<Talk> GetAll();
-        Talk GetSingle(Guid id);
+        Talk GetSingle(int id);
         bool Save();
         void Update(Talk item);
     }
