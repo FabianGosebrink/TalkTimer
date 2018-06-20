@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  server: 'https://food-api-core.azurewebsites.net/',
+  server: 'https://talktimer.azurewebsites.net/',
   apiUrl: 'api/'
 };

@@ -68,6 +68,9 @@ namespace TimerTalk.API
                 mapper.CreateMap<TimerTick, TimerTickUpdateDto>().ReverseMap();
             });
             app.UseCors("CorsPolicy");
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseMvc();
