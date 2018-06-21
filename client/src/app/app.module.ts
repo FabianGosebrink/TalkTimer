@@ -25,7 +25,7 @@ import {
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   console.log('APP_INITIALIZER STARTING');
-  return () => oidcConfigService.load_using_stsServer(environment.stsServer);
+  return () => oidcConfigService.load_using_stsServer('https://localhost:44318');
 }
 
 @NgModule({
@@ -43,6 +43,7 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AuthModule.forRoot(),
     RouterModule.forRoot(AppRoutes, {
       useHash: true,
       preloadingStrategy: PreloadAllModules
@@ -72,8 +73,8 @@ export class AppModule {
 
       const openIDImplicitFlowConfiguration = new OpenIDImplicitFlowConfiguration();
 
-      openIDImplicitFlowConfiguration.stsServer = environment.stsServer;
-      openIDImplicitFlowConfiguration.redirect_url = 'https://localhost:5001';
+      openIDImplicitFlowConfiguration.stsServer = 'https://localhost:44318';
+      openIDImplicitFlowConfiguration.redirect_url = 'https://localhost:4200';
       openIDImplicitFlowConfiguration.client_id = 'timertalkclient';
       openIDImplicitFlowConfiguration.response_type = 'id_token token';
       openIDImplicitFlowConfiguration.scope = 'timer_talk_scope openid profile email';
@@ -89,6 +90,7 @@ export class AppModule {
 
       const authWellKnownEndpoints = new AuthWellKnownEndpoints();
       authWellKnownEndpoints.setWellKnownEndpoints(this.oidcConfigService.wellKnownEndpoints);
+
       this.oidcSecurityService.setupModule(openIDImplicitFlowConfiguration, authWellKnownEndpoints);
 
     });
