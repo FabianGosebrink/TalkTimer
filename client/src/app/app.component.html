@@ -1,6 +1,13 @@
 <app-header></app-header>
 
-<router-outlet></router-outlet>
+<div *ngIf="isAuthorized">
+  <router-outlet></router-outlet>
+</div>
+
+<div *ngIf="!isAuthorized">
+  Login Sir!
+</div>
+
 
 <footer class="footer">
   <div class="container">
