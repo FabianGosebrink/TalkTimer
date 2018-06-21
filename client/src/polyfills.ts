@@ -72,3 +72,8 @@ getWindow().$ = getWindow().jQuery = jquery;
 function getWindow(): any {
   return window;
 }
+
+import 'ie-shim'; // Internet Explorer 9 support.
+
+/** Workaround for IE11 and polyfill problem */
+import 'isomorphic-fetch';
