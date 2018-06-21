@@ -7,11 +7,13 @@
           <a [routerLink]="['/overview/']">go back</a>
         </small>
       </h3>
-      <app-talk-form [timerStarted]="talkIsRunning" (intervalAdded)="intervalAdded($event)" (start)="start()" (reset)="resetTimers()"></app-talk-form>
+      <app-talk-form [timerStarted]="talkIsRunning" (intervalAdded)="intervalAdded($event)" (start)="start()" (reset)="resetTimers()"
+        [timerTickToUpdate]="timerTickToUpdate" (intervalUpdated)="intervalUpdated($event)"></app-talk-form>
 
       <app-total-time [totalTime]="totalTime" [totalPercentage]="totalPercentage"></app-total-time>
 
-      <app-talk-part-list [listOfIntervals]="timerTickService?.listOfIntervals" [talkIsRunning]="talkIsRunning" (deleteTimer)="deleteTimer($event)"></app-talk-part-list>
+      <app-talk-part-list [listOfIntervals]="timerTickService?.listOfIntervals" [talkIsRunning]="talkIsRunning" (deleteTimer)="deleteTimer($event)"
+        (updateTimer)="updateTimer($event)"></app-talk-part-list>
 
     </div>
   </div>

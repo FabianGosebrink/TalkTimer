@@ -18,6 +18,7 @@ import { TimerTickService } from '../services/timer-tick.service';
 })
 export class TalksDetailsComponent implements OnInit, OnDestroy {
   selectedTalk: Observable<Talk>;
+  timerTickToUpdate: TimerTick;
 
   totalTime: number;
   totalPercentage: number;
@@ -67,12 +68,20 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  intervalUpdated(updateModel: any) {
+    // TODO UPDATE HERE
+  }
+
   deleteTimer(timerTick: TimerTick) {
     const talkId = this.activatedRoute.snapshot.params['talkId'];
     this.talkStorageService.deleteFromTalk(talkId, timerTick).subscribe(() => {
       this.timerTickService.deleteTimerTick(timerTick);
       this.setTotalTimeAndPercentage();
     });
+  }
+
+  updateTimer(timerTick: TimerTick) {
+    this.timerTickToUpdate = timerTick;
   }
 
   resetTimers() {

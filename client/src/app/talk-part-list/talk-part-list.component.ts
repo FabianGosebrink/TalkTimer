@@ -10,11 +10,16 @@ export class TalkPartListComponent implements OnInit {
   @Input() listOfIntervals: TimerTick[] = [];
   @Input() talkIsRunning: false;
   @Output() deleteTimer = new EventEmitter();
+  @Output() updateTimer = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}
 
   deleteTimerTick(timerTick: TimerTick) {
     this.deleteTimer.emit(timerTick);
+  }
+
+  updateTimerTick(timerTick: TimerTick) {
+    this.updateTimer.emit(timerTick);
   }
 }

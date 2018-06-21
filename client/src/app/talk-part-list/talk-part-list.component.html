@@ -22,6 +22,7 @@
     </div>
 
 
+    <button (click)="updateTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Update</button>
     <button (click)="deleteTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Delete Timer</button>
   </li>
 </ul>

@@ -9,7 +9,16 @@ import { TimerTick } from '../models/timerTick.model';
 })
 export class TalkFormComponent implements OnInit {
   @Input() timerStarted = false;
+  @Input()
+  set timerTickToUpdate(value: TimerTick) {
+    if (!value) {
+      return;
+    }
+
+    this.setTimerInForm(value);
+  }
   @Output() intervalAdded = new EventEmitter();
+  @Output() intervalUpdated = new EventEmitter();
   @Output() start = new EventEmitter();
   @Output() reset = new EventEmitter();
   form: FormGroup;
@@ -22,17 +31,29 @@ export class TalkFormComponent implements OnInit {
         Validators.required,
         Validators.pattern('^[0-9]+$')
       ]),
-      topic: new FormControl('', Validators.required)
+      topic: new FormControl('', Validators.required),
+      id: new FormControl()
     });
   }
 
-  addTimer() {
-    const enteredValueInSeconds = +this.form.value.timeInMinutes * 60;
-
-    const topic = this.form.value.topic || '';
-    const timerTick = new TimerTick(topic, enteredValueInSeconds);
-    this.intervalAdded.emit(timerTick);
+  addOrUpdateTimer() {
+    if (this.form.value.id) {
+      this.intervalUpdated.emit(this.form.value);
+    } else {
+      const enteredValueInSeconds = +this.form.value.timeInMinutes * 60;
+      const topic = this.form.value.topic || '';
+      const timerTick = new TimerTick(topic, enteredValueInSeconds);
+      this.intervalAdded.emit(timerTick);
+    }
     this.form.reset();
+  }
+
+  setTimerInForm(timerTick: TimerTick) {
+    this.form.setValue({
+      timeInMinutes: timerTick.intervalSeconds / 60,
+      topic: timerTick.topic,
+      id: timerTick.id
+    });
   }
 
   resetTimers() {
