@@ -25,7 +25,7 @@ import {
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
   console.log('APP_INITIALIZER STARTING');
-  return () => oidcConfigService.load_using_stsServer('https://localhost:44318');
+  return () => oidcConfigService.load_using_stsServer(environment.stsServer);
 }
 
 @NgModule({
@@ -73,12 +73,13 @@ export class AppModule {
 
       const openIDImplicitFlowConfiguration = new OpenIDImplicitFlowConfiguration();
 
-      openIDImplicitFlowConfiguration.stsServer = 'https://localhost:44318';
-      openIDImplicitFlowConfiguration.redirect_url = 'https://localhost:4200';
+      
+      openIDImplicitFlowConfiguration.stsServer = environment.stsServer;
+      openIDImplicitFlowConfiguration.redirect_url = environment.clientApp;
       openIDImplicitFlowConfiguration.client_id = 'timertalkclient';
       openIDImplicitFlowConfiguration.response_type = 'id_token token';
       openIDImplicitFlowConfiguration.scope = 'timer_talk_scope openid profile email';
-      openIDImplicitFlowConfiguration.post_logout_redirect_uri = 'https://localhost:44395/unauthorized';
+      openIDImplicitFlowConfiguration.post_logout_redirect_uri = environment.clientApp + '/overview';
       openIDImplicitFlowConfiguration.start_checksession = false;
       openIDImplicitFlowConfiguration.silent_renew = false;
       openIDImplicitFlowConfiguration.post_login_route = '/overview';
