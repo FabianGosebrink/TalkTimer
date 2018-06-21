@@ -1,3 +1,6 @@
 /server/ASP.NET Core/.vs/
 /server/ASP.NET Core/TimerTalk.API/obj
 /server/ASP.NET Core/TimerTalk.API/bin
+
+/server/ASP.NET Core/TimerTalk.Sts/bin
+/server/ASP.NET Core/TimerTalk.Sts/obj
