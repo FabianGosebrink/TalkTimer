@@ -44,22 +44,22 @@ namespace TimerTalk.Sts
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris = new List<string>
                     {
-                        "https://localhost:5001",
-                        "https://localhost:5001/silent-renew.html",
+                        "https://localhost:4200",
+                        "https://localhost:4200/silent-renew.html",
                         $"{timerTalkClientUrl}",
                         $"{timerTalkClientUrl}/silent-renew.html"
 
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "https://localhost:5001/unauthorized",
-                        "https://localhost:5001",
+                        "https://localhost:4200/unauthorized",
+                        "https://localhost:4200",
                         $"{timerTalkClientUrl}",
                         $"{timerTalkClientUrl}/unauthorized"
                     },
                     AllowedCorsOrigins = new List<string>
                     {
-                        "https://localhost:5001",
+                        "https://localhost:4200",
                         $"{timerTalkClientUrl}"
                     },
                     AllowedScopes = new List<string>
