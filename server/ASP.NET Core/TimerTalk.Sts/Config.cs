@@ -52,10 +52,10 @@ namespace TimerTalk.Sts
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "https://localhost:4200/unauthorized",
+                        "https://localhost:4200/#/overview",
                         "https://localhost:4200",
                         $"{timerTalkClientUrl}",
-                        $"{timerTalkClientUrl}/unauthorized"
+                        $"{timerTalkClientUrl}/#/overview"
                     },
                     AllowedCorsOrigins = new List<string>
                     {

@@ -79,12 +79,12 @@ export class AppModule {
       openIDImplicitFlowConfiguration.client_id = 'timertalkclient';
       openIDImplicitFlowConfiguration.response_type = 'id_token token';
       openIDImplicitFlowConfiguration.scope = 'timer_talk_scope openid profile email';
-      openIDImplicitFlowConfiguration.post_logout_redirect_uri = environment.clientApp + '/overview';
+      openIDImplicitFlowConfiguration.post_logout_redirect_uri = environment.clientApp + '/#/overview';
       openIDImplicitFlowConfiguration.start_checksession = false;
       openIDImplicitFlowConfiguration.silent_renew = false;
-      openIDImplicitFlowConfiguration.post_login_route = '/overview';
-      openIDImplicitFlowConfiguration.forbidden_route = '/overview';
-      openIDImplicitFlowConfiguration.unauthorized_route = '/overview';
+      openIDImplicitFlowConfiguration.post_login_route = '/#/overview';
+      openIDImplicitFlowConfiguration.forbidden_route = '/#/overview';
+      openIDImplicitFlowConfiguration.unauthorized_route = '/#/overview';
       openIDImplicitFlowConfiguration.log_console_warning_active = true;
       openIDImplicitFlowConfiguration.log_console_debug_active = false;
       openIDImplicitFlowConfiguration.max_id_token_iat_offset_allowed_in_seconds = 10;
