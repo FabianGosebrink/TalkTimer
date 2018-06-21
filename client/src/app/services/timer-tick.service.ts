@@ -7,32 +7,25 @@ import { TimerTick } from '../models/timerTick.model';
   providedIn: 'root'
 })
 export class TimerTickService {
-  private listOfIntervalsInternal: TimerTick[] = [];
-
-  get listOfIntervals() {
-    return this.listOfIntervalsInternal;
-  }
+  listOfIntervals: TimerTick[] = [];
 
   addTimerTick(timerTick: TimerTick) {
-    this.listOfIntervalsInternal = [
-      ...this.listOfIntervalsInternal,
-      ...[timerTick]
-    ];
+    this.listOfIntervals = [...this.listOfIntervals, ...[timerTick]];
   }
 
-  deleteTimerTick(timerTick: TimerTick) {
-    this.listOfIntervalsInternal = this.listOfIntervals.filter(
-      item => item.id !== timerTick.id
+  deleteTimerTick(timerTickId: number) {
+    this.listOfIntervals = this.listOfIntervals.filter(
+      item => item.id !== timerTickId
     );
   }
 
   resetTimerTicks() {
-    this.listOfIntervalsInternal = [];
+    this.listOfIntervals = [];
   }
 
   getTotalTime() {
     let totalTime = 0;
-    this.listOfIntervalsInternal.forEach(element => {
+    this.listOfIntervals.forEach(element => {
       totalTime += element.intervalSeconds;
     });
 
@@ -53,7 +46,7 @@ export class TimerTickService {
   }
 
   getAllIntervalls() {
-    return this.listOfIntervalsInternal.map(item => this.createInterval(item));
+    return this.listOfIntervals.map(item => this.createInterval(item));
   }
 
   private createInterval(timerTick: TimerTick) {
@@ -70,7 +63,7 @@ export class TimerTickService {
 
   private getAllSecondsLeft() {
     let allSecondsLeft = 0;
-    this.listOfIntervalsInternal.forEach(element => {
+    this.listOfIntervals.forEach(element => {
       allSecondsLeft += element.secondsLeft;
     });
 

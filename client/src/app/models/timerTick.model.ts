@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 
 export class TimerTick {
-  id: string;
+  id: number;
   get finished() {
     return this.secondsLeft === 0;
   }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Talk } from '../models/talk.model';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,15 @@ export class TalkStorageService {
         this.timerTickEndpoint
       }`,
       timerTick
+    );
+  }
+
+  updateTimerTick(talkId: string, updateModel: TimerTickUpdateModel) {
+    return this.http.put<TimerTick>(
+      `${this.actionUrl}${this.talkEndpoint}${talkId}/${
+        this.timerTickEndpoint
+      }${updateModel.id}`,
+      updateModel
     );
   }
 

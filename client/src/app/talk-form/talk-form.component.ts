@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
 
 @Component({
   selector: 'app-talk-form',
@@ -10,7 +11,7 @@ import { TimerTick } from '../models/timerTick.model';
 export class TalkFormComponent implements OnInit {
   @Input() timerStarted = false;
   @Input()
-  set timerTickToUpdate(value: TimerTick) {
+  set timerTickToUpdate(value: TimerTickUpdateModel) {
     if (!value) {
       return;
     }
@@ -37,10 +38,12 @@ export class TalkFormComponent implements OnInit {
   }
 
   addOrUpdateTimer() {
+    const enteredValueInSeconds = +this.form.value.timeInMinutes * 60;
     if (this.form.value.id) {
-      this.intervalUpdated.emit(this.form.value);
+      const toSend = this.form.value as TimerTickUpdateModel;
+      toSend.intervalSeconds = enteredValueInSeconds;
+      this.intervalUpdated.emit(toSend);
     } else {
-      const enteredValueInSeconds = +this.form.value.timeInMinutes * 60;
       const topic = this.form.value.topic || '';
       const timerTick = new TimerTick(topic, enteredValueInSeconds);
       this.intervalAdded.emit(timerTick);
@@ -48,11 +51,11 @@ export class TalkFormComponent implements OnInit {
     this.form.reset();
   }
 
-  setTimerInForm(timerTick: TimerTick) {
+  setTimerInForm(timerTickUpdateModel: TimerTickUpdateModel) {
     this.form.setValue({
-      timeInMinutes: timerTick.intervalSeconds / 60,
-      topic: timerTick.topic,
-      id: timerTick.id
+      timeInMinutes: timerTickUpdateModel.intervalSeconds / 60,
+      topic: timerTickUpdateModel.topic,
+      id: timerTickUpdateModel.id
     });
   }
 

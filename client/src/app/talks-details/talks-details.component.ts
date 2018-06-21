@@ -8,6 +8,7 @@ import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { Talk } from '../models/talk.model';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
 import { TalkStorageService } from '../services/talk-storage.service';
 import { TimerTickService } from '../services/timer-tick.service';
 
@@ -18,7 +19,7 @@ import { TimerTickService } from '../services/timer-tick.service';
 })
 export class TalksDetailsComponent implements OnInit, OnDestroy {
   selectedTalk: Observable<Talk>;
-  timerTickToUpdate: TimerTick;
+  timerTickToUpdate: TimerTickUpdateModel;
 
   totalTime: number;
   totalPercentage: number;
@@ -39,6 +40,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   }
 
   private setInitialtimerTicksForTalk() {
+    this.timerTickService.resetTimerTicks();
     const id = this.activatedRoute.snapshot.params['talkId'];
     this.selectedTalk = this.talkStorageService.getSingle(id);
     this.talkStorageService
@@ -68,19 +70,24 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  intervalUpdated(updateModel: any) {
-    // TODO UPDATE HERE
+  intervalUpdated(updateModel: TimerTickUpdateModel) {
+    const talkId = this.activatedRoute.snapshot.params['talkId'];
+    this.talkStorageService
+      .updateTimerTick(talkId, updateModel)
+      .subscribe((timerTick: TimerTick) => {
+        this.setInitialtimerTicksForTalk();
+      });
   }
 
   deleteTimer(timerTick: TimerTick) {
     const talkId = this.activatedRoute.snapshot.params['talkId'];
     this.talkStorageService.deleteFromTalk(talkId, timerTick).subscribe(() => {
-      this.timerTickService.deleteTimerTick(timerTick);
+      this.timerTickService.deleteTimerTick(timerTick.id);
       this.setTotalTimeAndPercentage();
     });
   }
 
-  updateTimer(timerTick: TimerTick) {
+  updateTimer(timerTick: TimerTickUpdateModel) {
     this.timerTickToUpdate = timerTick;
   }
 
@@ -142,7 +149,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     this.destroy$ = new Subject();
   }
 
-  private triggerScrollTo(id: string) {
+  private triggerScrollTo(id: number) {
     const config: ScrollToConfigOptions = { target: id };
 
     this.scrollToService.scrollTo(config);

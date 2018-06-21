@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
 
 @Component({
   selector: 'app-talk-part-list',
@@ -20,6 +21,7 @@ export class TalkPartListComponent implements OnInit {
   }
 
   updateTimerTick(timerTick: TimerTick) {
-    this.updateTimer.emit(timerTick);
+    const toSend = new TimerTickUpdateModel(timerTick);
+    this.updateTimer.emit(toSend);
   }
 }

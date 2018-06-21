@@ -1,7 +1,7 @@
 import { TimerTick } from './timerTick.model';
 
 export class Talk {
-  readonly id: string;
+  readonly id: number;
   readonly name: string;
 
   readonly added: Date;
