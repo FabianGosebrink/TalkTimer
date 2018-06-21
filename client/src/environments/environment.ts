@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   server: 'https://localhost:5001/',
+  stsServer: 'https://localhost:44318',
   apiUrl: 'api/'
 };
 
