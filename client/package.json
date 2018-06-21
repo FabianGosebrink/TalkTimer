@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --ssl",
+    "start": "ng serve --ssl --ssl-key ssl/server.key --ssl-cert ssl/server.crt",
     "build": "ng build",
     "build-prod": "ng build --prod --output-path=\".dist/web\" --base-href ./",
     "build-all": "npm run build-prod && npm run build-desktop && npm run zip-desktop",
