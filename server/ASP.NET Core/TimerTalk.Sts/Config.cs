@@ -24,6 +24,11 @@ namespace TimerTalk.Sts
             return new ApiResource[]
             {
                 new ApiResource("timer_talk_scope", "Timer Talk")
+                {
+                    ApiSecrets = {
+                        new Secret("timerTalkSecret".Sha256())
+                    }
+                }
             };
         }
 

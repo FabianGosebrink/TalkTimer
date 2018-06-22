@@ -6,9 +6,11 @@ using System.Linq;
 using TimerTalk.API.Repositories;
 using TimerTalk.API.Models;
 using TimerTalk.API.Dto;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimerTalk.API.Controllers
 {
+    [Authorize]
     [Route("api/talks/{talkId}/[controller]")]
     public class TimerTicksController : ControllerBase
     {
