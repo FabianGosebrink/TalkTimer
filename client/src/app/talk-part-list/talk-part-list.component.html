@@ -1,5 +1,5 @@
-<h3 class="display-5 space-bottom">Parts of your talk</h3>
-<ul style="list-style-type: none;">
+<h3 class="display-5 space-bottom" *ngIf="listOfIntervals?.length > 0">Parts of your talk</h3>
+<ul style="list-style-type: none;" *ngIf="listOfIntervals?.length > 0; else loading;">
   <li *ngFor="let item of listOfIntervals; let i = index" class="space-bottom">
     <div [id]="item.id">
       <div *ngIf="!item.currentActive; else active" style="color: grey; ">
@@ -25,3 +25,5 @@
     <button (click)="deleteTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Delete Timer</button>
   </li>
 </ul>
+
+<ng-template #loading>Working on it...</ng-template>

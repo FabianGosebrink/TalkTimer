@@ -18,7 +18,7 @@ import { TimerTickService } from '../services/timer-tick.service';
   styleUrls: ['./talks-details.component.css']
 })
 export class TalksDetailsComponent implements OnInit, OnDestroy {
-  selectedTalk: Observable<Talk>;
+  selectedTalk$: Observable<Talk>;
   timerTickToUpdate: TimerTickUpdateModel;
 
   totalTime: number;
@@ -42,7 +42,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   private setInitialtimerTicksForTalk() {
     this.timerTickService.resetTimerTicks();
     const id = this.activatedRoute.snapshot.params['talkId'];
-    this.selectedTalk = this.talkStorageService.getSingle(id);
+    this.selectedTalk$ = this.talkStorageService.getSingle(id);
     this.talkStorageService
       .getAllTimerTicks(id)
       .subscribe((result: TimerTick[]) => {
@@ -92,11 +92,10 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   }
 
   resetTimers() {
+    this.talkIsRunning = false;
     this.fireDestroy();
-    this.timerTickService.resetTimerTicks();
     this.timers = [];
     this.setInitialtimerTicksForTalk();
-    this.talkIsRunning = false;
   }
 
   start() {
@@ -126,8 +125,10 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
           currentTimerTick.currentActive = true;
         }),
         finalize(() => {
-          const newIndex = index + 1;
-          this.startTimer(newIndex);
+          if (this.talkIsRunning) {
+            const newIndex = index + 1;
+            this.startTimer(newIndex);
+          }
         }),
         takeUntil(this.destroy$)
       )

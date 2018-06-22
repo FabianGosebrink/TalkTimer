@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { interval } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { TimerTick } from '../models/timerTick.model';
 
@@ -10,7 +10,8 @@ export class TimerTickService {
   listOfIntervals: TimerTick[] = [];
 
   addTimerTick(timerTick: TimerTick) {
-    this.listOfIntervals = [...this.listOfIntervals, ...[timerTick]];
+    const index = this.listOfIntervals.length;
+    this.listOfIntervals.splice(index, 0, timerTick);
   }
 
   deleteTimerTick(timerTickId: number) {
@@ -45,7 +46,7 @@ export class TimerTickService {
     return percentage;
   }
 
-  getAllIntervalls() {
+  getAllIntervalls(): Observable<TimerTick>[] {
     return this.listOfIntervals.map(item => this.createInterval(item));
   }
 

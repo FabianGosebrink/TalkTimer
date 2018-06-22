@@ -1,13 +1,6 @@
 <app-header></app-header>
 
-<div *ngIf="isAuthorized">
-  <router-outlet></router-outlet>
-</div>
-
-<div *ngIf="!isAuthorized">
-  Login Sir!
-</div>
-
+<router-outlet></router-outlet>
 
 <footer class="footer">
   <div class="container">

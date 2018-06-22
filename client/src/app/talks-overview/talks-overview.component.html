@@ -14,21 +14,26 @@
       </div>
     </form>
 
-    <h2 class="border-bottom border-gray pb-2 mb-0">Talks</h2>
 
 
-    <div class="media text-muted pt-3" *ngFor="let talk of talks | async">
-      <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
-      <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-        <div class="d-flex justify-content-between align-items-center w-100">
-          <h3 class="text-gray-dark">{{talk.name}}</h3>
-          <a class="btn btn-primary" [routerLink]="['/details/', talk.id]">View</a>
+    <ng-template #loading>Working on it...</ng-template>
+
+    <div *ngIf="(talks$ | async) as talks; else loading">
+      <h2 class="border-bottom border-gray pb-2 mb-0">Talks</h2>
+      <div class="media text-muted pt-3" *ngFor="let talk of talks">
+        <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <h3 class="text-gray-dark">{{talk.name}}</h3>
+            <a class="btn btn-primary" [routerLink]="['/details/', talk.id]">View</a>
+          </div>
+          <span class="d-block">{{talk.added | date :'medium'}}</span>
+          <span class="d-block">
+            <a href="#" (click)="deleteTalk(talk, $event)">Delete</a>
+          </span>
         </div>
-        <span class="d-block">{{talk.added | date :'medium'}}</span>
-        <span class="d-block">
-          <a href="#" (click)="deleteTalk(talk, $event)">Delete</a>
-        </span>
       </div>
     </div>
   </div>
+
 </main>

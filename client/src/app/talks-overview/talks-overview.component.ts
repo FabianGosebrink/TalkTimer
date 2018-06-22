@@ -12,11 +12,11 @@ import { TalkStorageService } from '../services/talk-storage.service';
 })
 export class TalksOverviewComponent implements OnInit {
   form: FormGroup;
-  talks: Observable<Talk[]>;
+  talks$: Observable<Talk[]>;
   constructor(private readonly talkStorageService: TalkStorageService) {}
 
   ngOnInit() {
-    this.talks = this.talkStorageService.getAll();
+    this.talks$ = this.talkStorageService.getAll();
 
     this.form = new FormGroup({
       talkName: new FormControl('', Validators.required)
@@ -26,7 +26,7 @@ export class TalksOverviewComponent implements OnInit {
   addTalk() {
     const talkName = this.form.value.talkName;
     const toSave = new Talk(talkName);
-    this.talks = this.talkStorageService.add(toSave).pipe(
+    this.talks$ = this.talkStorageService.add(toSave).pipe(
       tap(() => this.form.reset()),
       switchMap(() => this.talkStorageService.getAll())
     );
@@ -40,7 +40,7 @@ export class TalksOverviewComponent implements OnInit {
     event.stopImmediatePropagation();
     this.talkStorageService.delete(talk);
 
-    this.talks = this.talkStorageService
+    this.talks$ = this.talkStorageService
       .delete(talk)
       .pipe(switchMap(() => this.talkStorageService.getAll()));
   }

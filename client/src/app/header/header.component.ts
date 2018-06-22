@@ -1,5 +1,5 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -7,10 +7,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent implements OnInit, OnDestroy {
-
-  hasAdminRole = false
+  hasAdminRole = false;
   hasDataEventRecordsAdminRole = false;
 
   isAuthorizedSubscription: Subscription | undefined;
@@ -19,12 +17,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userDataSubscription: Subscription | undefined;
   userData: any;
 
-  constructor(public oidcSecurityService: OidcSecurityService) {
-  }
+  constructor(public oidcSecurityService: OidcSecurityService) {}
 
   ngOnInit() {
-    this.isAuthorizedSubscription = this.oidcSecurityService.getIsAuthorized().subscribe(
-      (isAuthorized: boolean) => {
+    this.isAuthorizedSubscription = this.oidcSecurityService
+      .getIsAuthorized()
+      .subscribe((isAuthorized: boolean) => {
         this.isAuthorized = isAuthorized;
 
         if (this.isAuthorized) {
@@ -32,9 +30,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.userDataSubscription = this.oidcSecurityService.getUserData().subscribe(
-      (userData: any) => {
-
+    this.userDataSubscription = this.oidcSecurityService
+      .getUserData()
+      .subscribe((userData: any) => {
         if (userData && userData !== '' && userData.role) {
           for (let i = 0; i < userData.role.length; i++) {
             if (userData.role[i] === 'dataEventRecords.admin') {
@@ -60,7 +58,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    console.log('Do login logic');
     this.oidcSecurityService.authorize();
   }
 

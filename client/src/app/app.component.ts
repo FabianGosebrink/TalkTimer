@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
@@ -7,12 +6,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
 export class AppComponent implements OnInit, OnDestroy {
-
-  isAuthorizedSubscription: Subscription | undefined;
-  isAuthorized = false;
-
   constructor(public oidcSecurityService: OidcSecurityService) {
     if (this.oidcSecurityService.moduleSetup) {
       this.doCallbackLogicIfRequired();
@@ -23,22 +17,17 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
-    this.isAuthorizedSubscription = this.oidcSecurityService.getIsAuthorized().subscribe(
-      (isAuthorized: boolean) => {
-        this.isAuthorized = isAuthorized;
-      });
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
-    if (this.isAuthorizedSubscription) {
-      this.isAuthorizedSubscription.unsubscribe();
-    }
     this.oidcSecurityService.onModuleSetup.unsubscribe();
   }
 
   private doCallbackLogicIfRequired() {
     if (window.location.hash && window.location.hash.startsWith('#id_token')) {
+      this.oidcSecurityService
+        .getIsAuthorized()
+        .subscribe(isAuth => console.log('------>', isAuth));
       console.log('do callback validation');
       console.log(window.location.hash);
       this.oidcSecurityService.authorizedCallback();
