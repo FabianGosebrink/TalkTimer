@@ -23,7 +23,21 @@ namespace TimerTalk.Sts
         {
             return new ApiResource[]
             {
-                new ApiResource("timer_talk_scope", "Timer Talk")
+                new ApiResource("timertalkclient")
+                {
+                    ApiSecrets =
+                    {
+                        new Secret("timerTalkSecret".Sha256())
+                    },
+                    Scopes =
+                    {
+                        new Scope
+                        {
+                            Name = "timer_talk_scope",
+                            DisplayName = "Scope for Timer Talk API"
+                        }
+                    },
+                }
             };
         }
 
@@ -39,7 +53,7 @@ namespace TimerTalk.Sts
                     ClientId = "timertalkclient",
                     AccessTokenType = AccessTokenType.Reference,
                     AccessTokenLifetime = 330,// 330 seconds, default 60 minutes
-                    IdentityTokenLifetime = 30,
+                    IdentityTokenLifetime = 300,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RedirectUris = new List<string>

@@ -73,7 +73,6 @@ export class AppModule {
 
       const openIDImplicitFlowConfiguration = new OpenIDImplicitFlowConfiguration();
 
-      
       openIDImplicitFlowConfiguration.stsServer = environment.stsServer;
       openIDImplicitFlowConfiguration.redirect_url = environment.clientApp;
       openIDImplicitFlowConfiguration.client_id = 'timertalkclient';
@@ -81,19 +80,20 @@ export class AppModule {
       openIDImplicitFlowConfiguration.scope = 'timer_talk_scope openid profile email';
       openIDImplicitFlowConfiguration.post_logout_redirect_uri = environment.clientApp + '/#/overview';
       openIDImplicitFlowConfiguration.start_checksession = false;
-      openIDImplicitFlowConfiguration.silent_renew = false;
+      openIDImplicitFlowConfiguration.silent_renew = true;
+      openIDImplicitFlowConfiguration.silent_redirect_url = environment.clientApp;
+      openIDImplicitFlowConfiguration.silent_renew_url = environment.clientApp + '/silent-renew.html';
       openIDImplicitFlowConfiguration.post_login_route = '/#/overview';
       openIDImplicitFlowConfiguration.forbidden_route = '/#/overview';
       openIDImplicitFlowConfiguration.unauthorized_route = '/#/overview';
       openIDImplicitFlowConfiguration.log_console_warning_active = true;
-      openIDImplicitFlowConfiguration.log_console_debug_active = false;
+      openIDImplicitFlowConfiguration.log_console_debug_active = true;
       openIDImplicitFlowConfiguration.max_id_token_iat_offset_allowed_in_seconds = 10;
 
       const authWellKnownEndpoints = new AuthWellKnownEndpoints();
       authWellKnownEndpoints.setWellKnownEndpoints(this.oidcConfigService.wellKnownEndpoints);
 
       this.oidcSecurityService.setupModule(openIDImplicitFlowConfiguration, authWellKnownEndpoints);
-
     });
 
     console.log('APP STARTING');
