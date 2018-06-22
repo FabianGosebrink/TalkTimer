@@ -50,7 +50,7 @@ namespace TimerTalk.API
               .AddIdentityServerAuthentication(options =>
               {
                   options.SaveToken = true;
-                  options.Authority = "https://localhost:44318/";
+                  options.Authority = timerTalkStsUrl;
                   options.ApiName = "timertalkclient";
                   options.ApiSecret = "timerTalkSecret";
               });
