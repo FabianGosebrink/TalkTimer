@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.AccessTokenValidation;
+﻿using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using TimerTalk.API.Context;
 using TimerTalk.API.Dto;
 using TimerTalk.API.Models;
@@ -33,6 +26,8 @@ namespace TimerTalk.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var timerTalkStsUrl = Configuration["TimerTalkStsUrl"];
+
             services.AddDbContext<TimerTalkContext>(options => options.UseSqlite("Data Source=TimerTalk.db"));
 
             services.AddScoped<ITalksRepository, TalksRepository>();
@@ -54,6 +49,7 @@ namespace TimerTalk.API
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
               .AddIdentityServerAuthentication(options =>
               {
+                  options.SaveToken = true;
                   options.Authority = "https://localhost:44318/";
                   options.ApiName = "timertalkclient";
                   options.ApiSecret = "timerTalkSecret";
@@ -64,8 +60,7 @@ namespace TimerTalk.API
             services.AddMvc(options =>
             {
                 options.Filters.Add(new AuthorizeFilter(apiScopeCheckPolicy));
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
