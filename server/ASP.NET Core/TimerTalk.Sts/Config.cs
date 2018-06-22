@@ -51,7 +51,7 @@ namespace TimerTalk.Sts
                 {
                     ClientName = "timertalkclient",
                     ClientId = "timertalkclient",
-                    AccessTokenType = AccessTokenType.Jwt,
+                    AccessTokenType = AccessTokenType.Reference,
                     AccessTokenLifetime = 330,// 330 seconds, default 60 minutes
                     IdentityTokenLifetime = 30,
                     AllowedGrantTypes = GrantTypes.Implicit,
