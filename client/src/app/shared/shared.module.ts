@@ -1,7 +1,8 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AuthHttpInterceptor } from './interceptors/auth-interceptor';
-import { ContentTypeAcceptHeader } from './interceptors/content-type-acceppt.interceptor';
+import { ContentTypeAcceptHeaderInterceptor } from './interceptors/content-type-accept.interceptor';
+import { LoadingBarInterceptor } from './interceptors/loading-bar.interceptor';
 
 @NgModule({
   imports: [],
@@ -15,7 +16,12 @@ import { ContentTypeAcceptHeader } from './interceptors/content-type-acceppt.int
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ContentTypeAcceptHeader,
+      useClass: ContentTypeAcceptHeaderInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingBarInterceptor,
       multi: true
     }
   ]

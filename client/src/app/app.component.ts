@@ -25,9 +25,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private doCallbackLogicIfRequired() {
     if (window.location.hash && window.location.hash.startsWith('#id_token')) {
-      this.oidcSecurityService
-        .getIsAuthorized()
-        .subscribe(isAuth => console.log('------>', isAuth));
       console.log('do callback validation');
       console.log(window.location.hash);
       this.oidcSecurityService.authorizedCallback();

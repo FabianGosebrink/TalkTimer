@@ -3,6 +3,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { PreloadAllModules, RouterModule } from '@angular/router';
+import { NgProgressModule } from '@ngx-progressbar/core';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import {
   AuthModule,
@@ -52,7 +53,8 @@ export function loadConfig(oidcConfigService: OidcConfigService) {
       preloadingStrategy: PreloadAllModules
     }),
     ScrollToModule.forRoot(),
-    SharedModule
+    SharedModule,
+    NgProgressModule.forRoot()
   ],
   providers: [
     OidcConfigService,
