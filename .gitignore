@@ -5,3 +5,7 @@
 /server/ASP.NET Core/TimerTalk.Sts/bin
 /server/ASP.NET Core/TimerTalk.Sts/obj
 /client/.vs
+/server/ASP.NET Core/TimerTalk.API/Properties/PublishProfiles/
+/server/ASP.NET Core/TimerTalk.Sts/Properties/PublishProfiles/
+/server/ASP.NET Core/TimerTalk.Sts/tempkey.rsa
+/server/ASP.NET Core/TimerTalk.Sts

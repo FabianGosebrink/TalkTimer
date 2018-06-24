@@ -46,7 +46,7 @@ namespace TimerTalk.Sts
         {
             var stsConfig = Configuration.GetSection("StsConfig");
 
-            X509Certificate2 cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "damienbodserver.pfx"), "");
+           // X509Certificate2 cert = new X509Certificate2(Path.Combine(_environment.ContentRootPath, "damienbodserver.pfx"), "");
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -109,7 +109,7 @@ namespace TimerTalk.Sts
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddIdentityServer()
-                .AddSigningCredential(cert)
+                .AddDeveloperSigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients(stsConfig))

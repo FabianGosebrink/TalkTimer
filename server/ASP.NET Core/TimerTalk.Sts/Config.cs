@@ -56,6 +56,7 @@ namespace TimerTalk.Sts
                     IdentityTokenLifetime = 300,
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
                     RedirectUris = new List<string>
                     {
                         "https://localhost:4200",
