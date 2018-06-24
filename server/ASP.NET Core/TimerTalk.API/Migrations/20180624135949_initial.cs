@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TimerTalk.API.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace TimerTalk.API.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
-                    Added = table.Column<DateTime>(nullable: false)
+                    Added = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,8 +29,9 @@ namespace TimerTalk.API.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Topic = table.Column<string>(nullable: true),
-                    intervalSeconds = table.Column<int>(nullable: false),
-                    secondsLeft = table.Column<int>(nullable: false),
+                    IntervalSeconds = table.Column<int>(nullable: false),
+                    SecondsLeft = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     TalkId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

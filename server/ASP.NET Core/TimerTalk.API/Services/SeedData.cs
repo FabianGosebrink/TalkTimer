@@ -27,7 +27,8 @@ namespace TimerTalk.API.Services
                      {
                          Added = DateTime.Now,
                          Name = "TestName",
-                         TimerTicks = new List<TimerTick>()
+                         TimerTicks = new List<TimerTick>(),
+                         UserId = "fabian.gosebrink@outlook.com"
                      }
 
                 //     new Movie

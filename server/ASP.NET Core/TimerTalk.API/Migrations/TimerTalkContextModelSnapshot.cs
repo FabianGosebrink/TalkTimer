@@ -25,6 +25,8 @@ namespace TimerTalk.API.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.ToTable("Talks");
@@ -35,13 +37,15 @@ namespace TimerTalk.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("IntervalSeconds");
+
+                    b.Property<int>("SecondsLeft");
+
                     b.Property<int>("TalkId");
 
                     b.Property<string>("Topic");
 
-                    b.Property<int>("intervalSeconds");
-
-                    b.Property<int>("secondsLeft");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
