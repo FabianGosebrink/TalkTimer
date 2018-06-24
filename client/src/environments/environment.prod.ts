@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  stsServer: 'https://localhost:44318',
+  stsServer: 'https://offeringsolutionssts.azurewebsites.net',
   server: 'https://talktimer.azurewebsites.net/',
-  clientApp: 'https://localhost:4200',
+  clientApp: 'https://talktimer.azurewebsites.net',
   apiUrl: 'api/'
 };
