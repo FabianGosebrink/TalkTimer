@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using TimerTalk.API.Context;
 using TimerTalk.API.Dto;
 using TimerTalk.API.Models;
@@ -53,7 +54,11 @@ namespace TimerTalk.API
                   options.Authority = timerTalkStsUrl;
                   options.ApiName = "timertalkclient";
                   options.ApiSecret = "timerTalkSecret";
-              });
+                  //options.TokenValidationParameters = new TokenValidationParameters
+                  //{
+                  //    NameClaimType = "name"
+                  //};
+              }); 
 
             services.AddAuthorization();
 

@@ -34,6 +34,7 @@ namespace TimerTalk.Sts
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
             claims.Add(new Claim(JwtClaimTypes.GivenName, user.UserName));
             claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
+            claims.Add(new Claim(JwtClaimTypes.Name, user.UserName));
 
             if (user.IsAdmin)
             {

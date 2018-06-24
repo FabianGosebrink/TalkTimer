@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,13 @@ namespace TimerTalk.API.Controllers
         public TalksController(ITalksRepository talksRepository)
         {
             _talksRepository = talksRepository;
+            
         }
 
         [HttpGet(Name = nameof(GetAll))]
         public IActionResult GetAll()
         {
-            List<Talk> talks = _talksRepository.GetAll().ToList();
+            List<Talk> talks = _talksRepository.GetAll(User.Identity.Name).ToList();
 
             var toReturn = talks.Select(x => AutoMapper.Mapper.Map<TalkDto>(x));
 
@@ -47,6 +49,7 @@ namespace TimerTalk.API.Controllers
             Talk toAdd = AutoMapper.Mapper.Map<Talk>(talkCreateDto);
             toAdd.Added = DateTime.UtcNow;
             toAdd.TimerTicks = new List<TimerTick>();
+            toAdd.UserId = User.Identity.Name;
             _talksRepository.Add(toAdd);
 
             if (!_talksRepository.Save())
@@ -54,7 +57,7 @@ namespace TimerTalk.API.Controllers
                 throw new Exception("Creating an item failed on save.");
             }
 
-            Talk newItem = _talksRepository.GetSingle(toAdd.Id);
+            Talk newItem = _talksRepository.GetSingle(toAdd.Id, User.Identity.Name);
 
             return CreatedAtRoute(nameof(GetSingle), new { id = newItem.Id },
                 AutoMapper.Mapper.Map<TalkDto>(newItem));
@@ -66,7 +69,7 @@ namespace TimerTalk.API.Controllers
         [Route("{id}", Name = nameof(GetSingle))]
         public IActionResult GetSingle(int id)
         {
-            Talk talk = _talksRepository.GetSingle(id);
+            Talk talk = _talksRepository.GetSingle(id, User.Identity.Name);
 
             if (talk == null)
             {
@@ -80,14 +83,14 @@ namespace TimerTalk.API.Controllers
         [Route("{id}", Name = nameof(Remove))]
         public IActionResult Remove(int id)
         {
-            Talk talk = _talksRepository.GetSingle(id);
+            Talk talk = _talksRepository.GetSingle(id, User.Identity.Name);
 
             if (talk == null)
             {
                 return NotFound();
             }
 
-            _talksRepository.Delete(id);
+            _talksRepository.Delete(id, User.Identity.Name);
 
             if (!_talksRepository.Save())
             {
@@ -106,7 +109,7 @@ namespace TimerTalk.API.Controllers
                 return BadRequest();
             }
 
-            Talk existingTalk = _talksRepository.GetSingle(id);
+            Talk existingTalk = _talksRepository.GetSingle(id, User.Identity.Name);
 
             if (existingTalk == null)
             {

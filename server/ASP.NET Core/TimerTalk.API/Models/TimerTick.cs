@@ -6,8 +6,9 @@ namespace TimerTalk.API.Models
     {
         public int Id { get; set; }
         public string Topic { get; set; }
-        public int intervalSeconds { get; set; }
-        public int secondsLeft { get; set; }
+        public int IntervalSeconds { get; set; }
+        public int SecondsLeft { get; set; }
+        public string UserId { get; set; }
 
         public int TalkId { get; set; }
         public Talk Talk { get; set; }

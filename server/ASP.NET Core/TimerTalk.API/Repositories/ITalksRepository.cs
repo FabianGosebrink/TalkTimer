@@ -8,10 +8,10 @@ namespace TimerTalk.API.Repositories
     public interface ITalksRepository
     {
         void Add(Talk item);
-        int Count();
-        void Delete(int id);
-        IQueryable<Talk> GetAll();
-        Talk GetSingle(int id);
+        int Count(string userId);
+        void Delete(int id, string userId);
+        IQueryable<Talk> GetAll(string userId);
+        Talk GetSingle(int id, string userId);
         bool Save();
         void Update(Talk item);
     }

@@ -26,13 +26,13 @@ namespace TimerTalk.API.Controllers
         [HttpGet]
         public IActionResult GetTimerTicksForTalk(int talkId)
         {
-            if (_talksRepository.GetSingle(talkId) == null)
+            if (_talksRepository.GetSingle(talkId, User.Identity.Name) == null)
             {
                 return NotFound();
             }
 
             var allItems = _timerTicksRepository
-                .GetAll()
+                .GetAll(User.Identity.Name)
                 .Where(x => x.Talk.Id == talkId)
                 .ToList();
 
@@ -47,13 +47,13 @@ namespace TimerTalk.API.Controllers
         [Route("{id}", Name = nameof(GetSingleTimerTicks))]
         public IActionResult GetSingleTimerTicks(int talkId, int id)
         {
-            if (_timerTicksRepository.GetSingle(talkId) == null)
+            if (_timerTicksRepository.GetSingle(talkId, User.Identity.Name) == null)
             {
                 return NotFound();
             }
 
             var singleItem = _timerTicksRepository
-                .GetAll()
+                .GetAll(User.Identity.Name)
                 .Where(x => x.Talk.Id == talkId && x.Id == id)
                 .FirstOrDefault();
 
@@ -79,7 +79,7 @@ namespace TimerTalk.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = _talksRepository.GetSingle(talkId);
+            var item = _talksRepository.GetSingle(talkId, User.Identity.Name);
 
             if (item == null)
             {
@@ -89,6 +89,7 @@ namespace TimerTalk.API.Controllers
             var model = Mapper.Map<TimerTick>(timertickCreateDto);
 
             model.Talk = item;
+            model.UserId = User.Identity.Name;
 
             _timerTicksRepository.Add(model);
 
@@ -116,14 +117,14 @@ namespace TimerTalk.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = _talksRepository.GetSingle(talkId);
+            var item = _talksRepository.GetSingle(talkId, User.Identity.Name);
 
             if (item == null)
             {
                 return NotFound("Not Found");
             }
 
-            var singleItem = _timerTicksRepository.GetAll().Where(x => x.Talk.Id == talkId && x.Id == id).FirstOrDefault();
+            var singleItem = _timerTicksRepository.GetAll(User.Identity.Name).Where(x => x.Talk.Id == talkId && x.Id == id).FirstOrDefault();
             if (singleItem == null)
             {
                 return NotFound();
@@ -147,20 +148,20 @@ namespace TimerTalk.API.Controllers
         [Route("{id}")]
         public IActionResult Remove(int talkId, int id)
         {
-            var item = _talksRepository.GetSingle(talkId);
+            var item = _talksRepository.GetSingle(talkId, User.Identity.Name);
 
             if (item == null)
             {
                 return NotFound("Not Found");
             }
 
-            var singleItem = _timerTicksRepository.GetAll().Where(x => x.Talk.Id == talkId && x.Id == id).FirstOrDefault();
+            var singleItem = _timerTicksRepository.GetAll(User.Identity.Name).Where(x => x.Talk.Id == talkId && x.Id == id).FirstOrDefault();
             if (singleItem == null)
             {
                 return NotFound();
             }
 
-            _timerTicksRepository.Delete(id);
+            _timerTicksRepository.Delete(id, User.Identity.Name);
 
             if (!_timerTicksRepository.Save())
             {

@@ -24,10 +24,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private doCallbackLogicIfRequired() {
-    if (window.location.hash && window.location.hash.startsWith('#id_token')) {
-      console.log('do callback validation');
-      console.log(window.location.hash);
+    if (this.isStsCallback()) {
       this.oidcSecurityService.authorizedCallback();
     }
+  }
+
+  private isStsCallback() {
+    return window.location.hash && window.location.hash.startsWith('#id_token');
   }
 }

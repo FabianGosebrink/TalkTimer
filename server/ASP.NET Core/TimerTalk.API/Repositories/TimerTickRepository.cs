@@ -21,25 +21,25 @@ namespace TimerTalk.API.Repositories
             _timerTalkContext.TimerTicks.Add(item);
         }
 
-        public int Count()
+        public int Count(string userId)
         {
-            return _timerTalkContext.TimerTicks.Count();
+            return _timerTalkContext.TimerTicks.Where(x => x.UserId == userId).Count();
         }
 
-        public void Delete(int id)
+        public void Delete(int id, string userId)
         {
-            TimerTick toRemove = GetSingle(id);
+            TimerTick toRemove = GetSingle(id, userId);
             _timerTalkContext.TimerTicks.Remove(toRemove);
         }
 
-        public IQueryable<TimerTick> GetAll()
+        public IQueryable<TimerTick> GetAll(string userId)
         {
-            return _timerTalkContext.TimerTicks;
+            return _timerTalkContext.TimerTicks.Where(x => x.UserId == userId);
         }
 
-        public TimerTick GetSingle(int id)
+        public TimerTick GetSingle(int id, string userId)
         {
-            return _timerTalkContext.TimerTicks.FirstOrDefault(x => x.Id == id);
+            return _timerTalkContext.TimerTicks.FirstOrDefault(x => x.Id == id && x.UserId == userId);
         }
 
         public bool Save()

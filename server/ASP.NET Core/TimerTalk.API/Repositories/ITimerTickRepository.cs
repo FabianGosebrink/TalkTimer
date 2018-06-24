@@ -7,10 +7,10 @@ namespace TimerTalk.API.Repositories
     public interface ITimerTickRepository
     {
         void Add(TimerTick item);
-        int Count();
-        void Delete(int id);
-        IQueryable<TimerTick> GetAll();
-        TimerTick GetSingle(int id);
+        int Count(string userId);
+        void Delete(int id, string userId);
+        IQueryable<TimerTick> GetAll(string userId);
+        TimerTick GetSingle(int id, string userId);
         bool Save();
         void Update(TimerTick item);
     }

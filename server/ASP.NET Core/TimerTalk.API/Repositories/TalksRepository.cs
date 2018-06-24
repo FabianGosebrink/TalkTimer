@@ -16,9 +16,9 @@ namespace TimerTalk.API.Repositories
             _timerTalkContext = timerTalkContext;
         }
 
-        public Talk GetSingle(int id)
+        public Talk GetSingle(int id, string userId)
         {
-            return _timerTalkContext.Talks.FirstOrDefault(x => x.Id == id);
+            return _timerTalkContext.Talks.FirstOrDefault(x => x.Id == id && x.UserId == userId);
         }
 
         public void Add(Talk item)
@@ -26,9 +26,9 @@ namespace TimerTalk.API.Repositories
             _timerTalkContext.Talks.Add(item);
         }
 
-        public void Delete(int id)
+        public void Delete(int id, string userId)
         {
-            Talk item = GetSingle(id);
+            Talk item = GetSingle(id, userId);
             _timerTalkContext.Talks.Remove(item);
         }
 
@@ -37,14 +37,14 @@ namespace TimerTalk.API.Repositories
             _timerTalkContext.Talks.Update(item);
         }
 
-        public IQueryable<Talk> GetAll()
+        public IQueryable<Talk> GetAll(string userId)
         {
-            return _timerTalkContext.Talks;
+            return _timerTalkContext.Talks.Where(x => x.UserId == userId);
         }
 
-        public int Count()
+        public int Count(string userId)
         {
-            return _timerTalkContext.Talks.Count();
+            return _timerTalkContext.Talks.Where(x => x.UserId == userId).Count();
         }
 
         public bool Save()
