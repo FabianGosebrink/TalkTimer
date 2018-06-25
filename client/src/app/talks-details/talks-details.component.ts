@@ -80,6 +80,10 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteTimer(timerTick: TimerTick) {
+    if (!confirm('Really delete')) {
+      return;
+    }
+
     const talkId = this.activatedRoute.snapshot.params['talkId'];
     this.talkStorageService.deleteFromTalk(talkId, timerTick).subscribe(() => {
       this.timerTickService.deleteTimerTick(timerTick.id);

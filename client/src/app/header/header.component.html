@@ -18,6 +18,7 @@
           <a class="text-white pointer" (click)="login()">Login</a>
         </li>
         <li *ngIf="isAuthorized">
+          <span class="text-white">Hello {{currentUserService.username | async}} | </span>
           <a class="text-white pointer" (click)="logout()">Logout</a>
         </li>
       </ul>
