@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Talk } from '../models/talk.model';
@@ -12,24 +12,16 @@ export class TalkStorageService {
   private readonly actionUrl: string;
   private readonly talkEndpoint = 'talks/';
   private readonly timerTickEndpoint = 'timerticks/';
-  private headers: HttpHeaders = new HttpHeaders();
-
   constructor(private readonly http: HttpClient) {
     this.actionUrl = environment.server + environment.apiUrl;
   }
 
   add(talk: Talk) {
-    return this.http.post<Talk>(this.actionUrl + this.talkEndpoint, talk, {
-      headers: this.headers
-    });
+    return this.http.post<Talk>(this.actionUrl + this.talkEndpoint, talk);
   }
 
   update(updatedTalk: Talk) {
-    return this.http.put<Talk>(
-      this.actionUrl + this.talkEndpoint,
-      updatedTalk,
-      { headers: this.headers }
-    );
+    return this.http.put<Talk>(this.actionUrl + this.talkEndpoint, updatedTalk);
   }
 
   addToTalk(talkId: string, timerTick: TimerTick) {
@@ -37,8 +29,7 @@ export class TalkStorageService {
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${
         this.timerTickEndpoint
       }`,
-      timerTick,
-      { headers: this.headers }
+      timerTick
     );
   }
 
@@ -47,8 +38,7 @@ export class TalkStorageService {
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${
         this.timerTickEndpoint
       }${updateModel.id}`,
-      updateModel,
-      { headers: this.headers }
+      updateModel
     );
   }
 
@@ -56,35 +46,25 @@ export class TalkStorageService {
     return this.http.delete(
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${
         this.timerTickEndpoint
-      }${timerTick.id}`,
-      { headers: this.headers }
+      }${timerTick.id}`
     );
   }
 
   delete(talk: Talk) {
-    return this.http.delete(`${this.actionUrl}${this.talkEndpoint}${talk.id}`, {
-      headers: this.headers
-    });
+    return this.http.delete(`${this.actionUrl}${this.talkEndpoint}${talk.id}`);
   }
 
   getAll() {
-    return this.http.get<Talk[]>(this.actionUrl + this.talkEndpoint, {
-      headers: this.headers
-    });
+    return this.http.get<Talk[]>(this.actionUrl + this.talkEndpoint);
   }
 
   getAllTimerTicks(talkId: string) {
     return this.http.get<TimerTick[]>(
-      `${this.actionUrl}${this.talkEndpoint}${talkId}/${
-        this.timerTickEndpoint
-      }`,
-      { headers: this.headers }
+      `${this.actionUrl}${this.talkEndpoint}${talkId}/${this.timerTickEndpoint}`
     );
   }
 
   getSingle(id: string) {
-    return this.http.get<Talk>(`${this.actionUrl}${this.talkEndpoint}${id}`, {
-      headers: this.headers
-    });
+    return this.http.get<Talk>(`${this.actionUrl}${this.talkEndpoint}${id}`);
   }
 }
