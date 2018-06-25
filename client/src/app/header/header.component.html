@@ -9,10 +9,10 @@
       </ul>
       <ul class="navbar-nav">
         <li *ngIf="!isAuthorized">
-          <a class="text-white" href="#" (click)="login()">Login</a>
+          <a class="text-white pointer" (click)="login()">Login</a>
         </li>
         <li *ngIf="isAuthorized">
-          <a class="text-white" href="#" (click)="logout()">Logout</a>
+          <a class="text-white pointer" (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>
