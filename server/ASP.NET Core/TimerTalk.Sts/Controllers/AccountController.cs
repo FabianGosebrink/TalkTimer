@@ -241,7 +241,7 @@ namespace TimerTalk.Sts.Controllers
                 SignOutIframeUrl = logout?.SignOutIFrameUrl
             };
 
-            await _persistedGrantService.RemoveAllGrantsAsync(subjectId, "angular2client");
+            await _persistedGrantService.RemoveAllGrantsAsync(subjectId, "timertalkclient");
 
             return Redirect(vm.PostLogoutRedirectUri);
             //return View("LoggedOut", vm);
