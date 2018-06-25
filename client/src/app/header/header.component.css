@@ -1,3 +1,11 @@
 .space-left {
   margin-left: 2rem;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.pointer:hover {
+  text-decoration: none;
+}

@@ -62,7 +62,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    console.log('Do logout logic');
     this.oidcSecurityService.logoff();
   }
 }
