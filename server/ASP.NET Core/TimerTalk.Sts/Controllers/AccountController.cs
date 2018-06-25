@@ -243,7 +243,8 @@ namespace TimerTalk.Sts.Controllers
 
             await _persistedGrantService.RemoveAllGrantsAsync(subjectId, "angular2client");
 
-            return View("LoggedOut", vm);
+            return Redirect(vm.PostLogoutRedirectUri);
+            //return View("LoggedOut", vm);
         }
 
         //
