@@ -155,7 +155,9 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
   }
 
   private triggerScrollTo(id: number) {
-    const config: ScrollToConfigOptions = { target: id };
+    const config: ScrollToConfigOptions = {
+      target: id.toString().toLowerCase()
+    };
 
     this.scrollToService.scrollTo(config);
   }

@@ -94,8 +94,8 @@ export class AppModule {
       openIDImplicitFlowConfiguration.post_login_route = '/#/overview';
       openIDImplicitFlowConfiguration.forbidden_route = '/#/overview';
       openIDImplicitFlowConfiguration.unauthorized_route = '/#/overview';
-      openIDImplicitFlowConfiguration.log_console_warning_active = true;
-      openIDImplicitFlowConfiguration.log_console_debug_active = true;
+      openIDImplicitFlowConfiguration.log_console_warning_active = !environment.production;
+      openIDImplicitFlowConfiguration.log_console_debug_active = !environment.production;
       openIDImplicitFlowConfiguration.max_id_token_iat_offset_allowed_in_seconds = 10;
 
       const authWellKnownEndpoints = new AuthWellKnownEndpoints();
