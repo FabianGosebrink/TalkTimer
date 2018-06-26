@@ -56,7 +56,7 @@ export class TimerTickService {
     timerTick.secondsLeft = timerTickDto.intervalSeconds;
     timerTick.id = timerTickDto.id;
     timerTick.position = timerTickDto.position;
-    return this.update(timerTick);
+    return this.appylValues(timerTick);
   }
 
   getTotalPercentage() {
@@ -97,12 +97,12 @@ export class TimerTickService {
     return allSecondsLeft;
   }
 
-  private calculateIntervalTime(intervalSeconds: number) {
+  calculateIntervalTime(intervalSeconds: number) {
     const duration = moment.duration(intervalSeconds, 'seconds');
     return moment.utc(duration.asMilliseconds()).format('HH:mm:ss');
   }
 
-  private calculateSecondsRan(intervalSeconds: number, secondsLeft: number) {
+  calculateSecondsRan(intervalSeconds: number, secondsLeft: number) {
     if (secondsLeft === 0) {
       return '0';
     }
@@ -112,16 +112,16 @@ export class TimerTickService {
     return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
-  private getPercentage(intervalSeconds: number, secondsLeft: number) {
+  getPercentage(intervalSeconds: number, secondsLeft: number) {
     return Math.round((secondsLeft / intervalSeconds) * 100) || 0;
   }
 
-  private getTimeLeft(secondsLeft: number) {
+  getTimeLeft(secondsLeft: number) {
     const duration = moment.duration(secondsLeft, 'seconds');
     return moment.utc(duration.asMilliseconds()).format('HH:mm:ss');
   }
 
-  private update(timerTick: TimerTick) {
+  appylValues(timerTick: TimerTick) {
     const clone = { ...timerTick };
     clone.id = timerTick.id;
     clone.secondsRan = this.calculateSecondsRan(
@@ -142,7 +142,6 @@ export class TimerTickService {
   }
 
   private orderByIndex(a: TimerTick, b: TimerTick) {
-    console.log(a, b);
     if (a.position < b.position) {
       console.log('-1');
       return -1;
