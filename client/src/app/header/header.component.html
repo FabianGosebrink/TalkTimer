@@ -15,11 +15,13 @@
 
       <ul class="navbar-nav navbar-right">
         <li *ngIf="!isAuthorized">
-          <a class="text-white pointer" (click)="login()">Login</a>
+          <a class="text-white pointer" (click)="login()">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>Login</a>
         </li>
         <li *ngIf="isAuthorized">
           <span class="text-white">Hello {{currentUserService.username | async}} | </span>
-          <a class="text-white pointer" (click)="logout()">Logout</a>
+          <a class="text-white pointer" (click)="logout()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
         </li>
       </ul>
     </div>

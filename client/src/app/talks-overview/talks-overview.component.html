@@ -16,7 +16,9 @@
 
 
 
-    <ng-template #loading>Working on it...</ng-template>
+    <ng-template #loading>
+      <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+    </ng-template>
 
     <div *ngIf="(talks$ | async) as talks; else loading">
       <h2 class="border-bottom border-gray pb-2 mb-0">Talks</h2>
@@ -25,11 +27,14 @@
         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
           <div class="d-flex justify-content-between align-items-center w-100">
             <h3 class="text-gray-dark">{{talk.name}}</h3>
-            <a class="btn btn-primary" [routerLink]="['/details/', talk.id]">View</a>
+            <a class="btn btn-primary" [routerLink]="['/details/', talk.id]">
+              <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> View</a>
           </div>
           <span class="d-block">{{talk.added | date :'medium'}}</span>
           <span class="d-block">
-            <a href="#" (click)="deleteTalk(talk, $event)">Delete</a>
+            <a href="#" (click)="deleteTalk(talk, $event)">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
           </span>
         </div>
       </div>

@@ -20,10 +20,18 @@
       </ng-template>
     </div>
 
-    <button (click)="updateTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Update</button>
-    <button (click)="deleteTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Delete Timer</button>
-    <button (click)="moveUp(item, i)" class="btn btn-link" *ngIf="!talkIsRunning" [disabled]="i === 0">Move up</button>
-    <button (click)="moveDown(item, i)" class="btn btn-link" *ngIf="!talkIsRunning" [disabled]="i === listOfIntervals.length - 1 || (listOfIntervals.length === 1 && i === 0)">Move down</button>
+    <button (click)="updateTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button>
+    <button (click)="deleteTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+    </button>
+    <button (click)="moveUp(item, i)" class="btn btn-link" *ngIf="!talkIsRunning" [disabled]="i === 0">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    </button>
+    <button (click)="moveDown(item, i)" class="btn btn-link" *ngIf="!talkIsRunning" [disabled]="i === listOfIntervals.length - 1 || (listOfIntervals.length === 1 && i === 0)">
+      <i class="fa fa-arrow-down" aria-hidden="true"></i>
+    </button>
   </li>
 </ul>
 

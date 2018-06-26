@@ -33,6 +33,7 @@
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.7",
     "electron-packager": "^12.1.0",
+    "font-awesome": "^4.7.0",
     "ie-shim": "0.1.0",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.3.1",
