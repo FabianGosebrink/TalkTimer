@@ -9,4 +9,5 @@ export class TimerTick {
   timeLeft: string;
   topic: string;
   intervalSeconds: number;
+  index: number;
 }

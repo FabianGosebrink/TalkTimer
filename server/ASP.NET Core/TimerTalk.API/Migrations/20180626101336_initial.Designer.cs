@@ -9,7 +9,7 @@ using TimerTalk.API.Context;
 namespace TimerTalk.API.Migrations
 {
     [DbContext(typeof(TimerTalkContext))]
-    [Migration("20180624135949_initial")]
+    [Migration("20180626101336_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,8 @@ namespace TimerTalk.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Index");
 
                     b.Property<int>("IntervalSeconds");
 

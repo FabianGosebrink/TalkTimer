@@ -12,6 +12,7 @@ export class TalkPartListComponent implements OnInit {
   @Input() talkIsRunning: false;
   @Output() deleteTimer = new EventEmitter();
   @Output() updateTimer = new EventEmitter();
+  @Output() indexChanged = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}
@@ -23,5 +24,24 @@ export class TalkPartListComponent implements OnInit {
   updateTimerTick(timerTick: TimerTick) {
     const toSend = new TimerTickUpdateModel(timerTick);
     this.updateTimer.emit(toSend);
+  }
+
+  moveUp(timerTick: TimerTick, currentIndex: number) {
+    const newIndex = timerTick.index - 1;
+    if (currentIndex === 0) {
+      return;
+    }
+    timerTick.index = newIndex;
+    this.indexChanged.emit(timerTick);
+  }
+
+  moveDown(timerTick: TimerTick, currentIndex: number) {
+    const newIndex = timerTick.index + 1;
+    if (currentIndex === this.listOfIntervals.length) {
+      return;
+    }
+
+    timerTick.index = newIndex;
+    this.indexChanged.emit(timerTick);
   }
 }

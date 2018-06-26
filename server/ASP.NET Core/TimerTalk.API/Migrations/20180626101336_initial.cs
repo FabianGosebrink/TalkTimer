@@ -32,6 +32,7 @@ namespace TimerTalk.API.Migrations
                     IntervalSeconds = table.Column<int>(nullable: false),
                     SecondsLeft = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
+                    Index = table.Column<int>(nullable: false),
                     TalkId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

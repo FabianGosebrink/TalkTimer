@@ -13,7 +13,7 @@
       <app-total-time [totalTime]="totalTime" [totalPercentage]="totalPercentage"></app-total-time>
 
       <app-talk-part-list [listOfIntervals]="timerTickService?.listOfIntervals" [talkIsRunning]="talkIsRunning" (deleteTimer)="deleteTimer($event)"
-        (updateTimer)="updateTimer($event)"></app-talk-part-list>
+        (updateTimer)="updateTimer($event)" (indexChanged)="indexChanged($event)"></app-talk-part-list>
 
     </div>
   </div>

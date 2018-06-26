@@ -86,6 +86,11 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     this.timerTickToUpdate = timerTick;
   }
 
+  indexChanged(timerTick: TimerTick) {
+    const updateModel = new TimerTickUpdateModel(timerTick);
+    this.intervalUpdated(updateModel);
+  }
+
   resetTimers() {
     this.talkIsRunning = false;
     this.fireDestroy();

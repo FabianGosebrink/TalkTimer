@@ -6,6 +6,7 @@
         <h5>{{item.topic}}</h5>
         <span>Time: {{item.intervalTime}} </span>
       </div>
+      {{item|json}}
       <ng-template #active>
         <h1 class="display-2" *ngIf="item.currentActive">{{item.topic}}
           <small class="text-muted">{{item.secondsRan}} s</small>
@@ -22,6 +23,8 @@
 
     <button (click)="updateTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Update</button>
     <button (click)="deleteTimerTick(item)" class="btn btn-link" *ngIf="!talkIsRunning">Delete Timer</button>
+    <button (click)="moveUp(item, i)" class="btn btn-link" *ngIf="!talkIsRunning" [disabled]="i === 0">Move up</button>
+    <button (click)="moveDown(item, i)" class="btn btn-link" *ngIf="!talkIsRunning" [disabled]="i === listOfIntervals.length - 1 || (listOfIntervals.length === 1 && i === 0)">Move down</button>
   </li>
 </ul>
 

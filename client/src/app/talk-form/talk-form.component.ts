@@ -51,6 +51,7 @@ export class TalkFormComponent implements OnInit {
         topic,
         intervalSeconds: enteredValueInSeconds
       } as TimerTickDto;
+      temp.index = this.timerTickService.listOfIntervals.length;
       const timerTick = this.timerTickService.createFrom(temp);
       this.intervalAdded.emit(timerTick);
     }

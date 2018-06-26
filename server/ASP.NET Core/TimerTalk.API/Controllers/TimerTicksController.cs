@@ -34,6 +34,7 @@ namespace TimerTalk.API.Controllers
             var allItems = _timerTicksRepository
                 .GetAll(User.Identity.Name)
                 .Where(x => x.Talk.Id == talkId)
+                .OrderBy(x => x.Id)
                 .ToList();
 
             var viewModels = allItems

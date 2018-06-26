@@ -37,6 +37,8 @@ namespace TimerTalk.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Index");
+
                     b.Property<int>("IntervalSeconds");
 
                     b.Property<int>("SecondsLeft");

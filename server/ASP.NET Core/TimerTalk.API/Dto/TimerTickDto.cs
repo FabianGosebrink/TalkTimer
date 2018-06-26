@@ -9,6 +9,7 @@ namespace TimerTalk.API.Dto
         public string Topic { get; set; }
         public int IntervalSeconds { get; set; }
         public int SecondsLeft { get; set; }
+        public int Index { get; set; }
 
         public int TalkId { get; set; }
     }
