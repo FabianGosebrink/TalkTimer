@@ -8,6 +8,7 @@
       </div>
       <ng-template #active>
         <h1 class="display-2" *ngIf="item.currentActive">{{item.topic}}
+          <br/>
           <small class="text-muted">{{item.secondsRan}} s</small>
         </h1>
         <div class="progress" *ngIf="item.currentActive">
@@ -15,7 +16,7 @@
             {{item.percentage}}%
           </div>
         </div>
-        <h3 class="display-3" *ngIf="item.currentActive">Time left: {{item.timeLeft}}
+        <h3 class="display-3" *ngIf="item.currentActive">{{item.timeLeft}}
         </h3>
       </ng-template>
     </div>

@@ -163,6 +163,8 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
           this.timerTickService.getTotalPercentage()
         );
 
+        this.triggerScrollTo(currentTimerTick.id);
+
         if (currentTimerTick.secondsLeft === 0) {
           currentTimerTick.currentActive = false;
           const nextTimerTick = this.timerTickService.listOfIntervals[
@@ -190,6 +192,7 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
         this.setTotalTimeAndPercentage();
       });
   }
+
   private fireDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -198,7 +201,8 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
 
   private triggerScrollTo(id: number) {
     const config: ScrollToConfigOptions = {
-      target: id.toString().toLowerCase()
+      target: id.toString().toLowerCase(),
+      offset: -200
     };
 
     this.scrollToService.scrollTo(config);

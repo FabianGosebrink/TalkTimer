@@ -133,7 +133,7 @@ export class TimerTickService {
 
   private getTimeLeft(secondsLeft: number) {
     const duration = moment.duration(secondsLeft, 'seconds');
-    return moment.utc(duration.asMilliseconds()).format('HH:mm:ss');
+    return moment.utc(duration.asMilliseconds()).format('mm:ss');
   }
 
   private appylValues(timerTick: TimerTick) {
