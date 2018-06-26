@@ -1,7 +1,7 @@
 export interface TimerTickDto {
   id: number;
   topic: string;
-  index: number;
+  position: number;
   intervalSeconds: number;
   secondsleft: number;
 }

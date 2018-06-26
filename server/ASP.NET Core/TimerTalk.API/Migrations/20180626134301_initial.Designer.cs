@@ -9,7 +9,7 @@ using TimerTalk.API.Context;
 namespace TimerTalk.API.Migrations
 {
     [DbContext(typeof(TimerTalkContext))]
-    [Migration("20180626101336_initial")]
+    [Migration("20180626134301_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

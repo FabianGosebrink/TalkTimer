@@ -34,7 +34,8 @@ export class TalkFormComponent implements OnInit {
         Validators.pattern('^[0-9]+$')
       ]),
       topic: new FormControl('', Validators.required),
-      id: new FormControl()
+      id: new FormControl(),
+      position: new FormControl()
     });
   }
 
@@ -51,7 +52,7 @@ export class TalkFormComponent implements OnInit {
         topic,
         intervalSeconds: enteredValueInSeconds
       } as TimerTickDto;
-      temp.index = this.timerTickService.listOfIntervals.length;
+      temp.position = this.timerTickService.listOfIntervals.length + 1;
       const timerTick = this.timerTickService.createFrom(temp);
       this.intervalAdded.emit(timerTick);
     }

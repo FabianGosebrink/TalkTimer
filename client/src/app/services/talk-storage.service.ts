@@ -43,6 +43,18 @@ export class TalkStorageService {
     );
   }
 
+  updateMultipleTimerTicks(
+    talkId: string,
+    updateModels: TimerTickUpdateModel[]
+  ) {
+    return this.http.put(
+      `${this.actionUrl}${this.talkEndpoint}${talkId}/${
+        this.timerTickEndpoint
+      }${updateModels[0].id}/multiple`,
+      updateModels
+    );
+  }
+
   deleteFromTalk(talkId: string, timerTick: TimerTick) {
     return this.http.delete(
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${

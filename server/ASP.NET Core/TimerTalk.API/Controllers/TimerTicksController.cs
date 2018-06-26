@@ -6,6 +6,7 @@ using TimerTalk.API.Repositories;
 using TimerTalk.API.Models;
 using TimerTalk.API.Dto;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace TimerTalk.API.Controllers
 {
@@ -143,6 +144,53 @@ namespace TimerTalk.API.Controllers
             var updatedDto = Mapper.Map<TimerTickDto>(singleItem);
 
             return Ok(updatedDto);
+        }
+
+        [HttpPut]
+        [Route("{id}/multiple")]
+        public IActionResult UpdateTimerTickForTalk(int talkId, int id, [FromBody] List<TimerTickUpdateDto> timerTickUpdateDtos)
+        {
+            if (timerTickUpdateDtos == null)
+            {
+                return BadRequest();
+            }
+
+            if (!timerTickUpdateDtos.Any())
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var item = _talksRepository.GetSingle(talkId, User.Identity.Name);
+
+            if (item == null)
+            {
+                return NotFound("Not Found");
+            }
+
+            foreach (var timerTickUpdateDto in timerTickUpdateDtos)
+            {
+                var singleItem = _timerTicksRepository.GetAll(User.Identity.Name).Where(x => x.Talk.Id == talkId && x.Id == id).FirstOrDefault();
+                if (singleItem == null)
+                {
+                    return NotFound();
+                }
+
+                Mapper.Map(timerTickUpdateDto, singleItem);
+
+                _timerTicksRepository.Update(singleItem);
+            }
+
+            if (!_timerTicksRepository.Save())
+            {
+                throw new Exception("Updating an ingredient failed on save.");
+            }
+
+            return Ok();
         }
 
         [HttpDelete]

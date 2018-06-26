@@ -86,9 +86,32 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     this.timerTickToUpdate = timerTick;
   }
 
-  indexChanged(timerTick: TimerTick) {
-    const updateModel = new TimerTickUpdateModel(timerTick);
-    this.intervalUpdated(updateModel);
+  indexChanged(indexChangedObject: any) {
+    const movedUp = indexChangedObject.direction === 'up';
+
+    if (movedUp) {
+      this.moveUpInternal(
+        this.timerTickService.listOfIntervals,
+        indexChangedObject.timerTick
+      );
+    } else {
+      this.moveDownInternal(
+        this.timerTickService.listOfIntervals,
+        indexChangedObject.timerTick
+      );
+    }
+
+    const updateModels = this.timerTickService.listOfIntervals.map(
+      (element, index) => {
+        element.position = index;
+        return new TimerTickUpdateModel(element);
+      }
+    );
+
+    const talkId = this.activatedRoute.snapshot.params['talkId'];
+    this.talkStorageService
+      .updateMultipleTimerTicks(talkId, updateModels)
+      .subscribe(() => console.log('saved'));
   }
 
   resetTimers() {
@@ -173,5 +196,23 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     };
 
     this.scrollToService.scrollTo(config);
+  }
+
+  private moveUpInternal(array, element) {
+    this.move(array, element, -1);
+  }
+
+  private moveDownInternal(array, element) {
+    this.move(array, element, 1);
+  }
+
+  private move(array, element, delta) {
+    const index = array.indexOf(element);
+    const newIndex = index + delta;
+    if (newIndex < 0 || newIndex === array.length) {
+      return;
+    }
+    const indexes = [index, newIndex].sort((a, b) => a - b);
+    array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]);
   }
 }

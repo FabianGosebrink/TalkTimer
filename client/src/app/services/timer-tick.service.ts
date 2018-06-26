@@ -14,7 +14,7 @@ export class TimerTickService {
   addTimerTick(timerTick: TimerTick) {
     const index = this.listOfIntervals.length;
     this.listOfIntervals.splice(index, 0, timerTick);
-    this.listOfIntervals.sort(this.orderByIndex);
+    this.listOfIntervals = this.listOfIntervals.sort(this.orderByIndex);
   }
 
   updateTimerTick(newTimerTick: TimerTick) {
@@ -26,14 +26,14 @@ export class TimerTickService {
       return;
     }
     this.listOfIntervals[index] = newTimerTick;
-    this.listOfIntervals.sort(this.orderByIndex);
+    this.listOfIntervals = this.listOfIntervals.sort(this.orderByIndex);
   }
 
   deleteTimerTick(timerTickId: number) {
     this.listOfIntervals = this.listOfIntervals.filter(
       item => item.id !== timerTickId
     );
-    this.listOfIntervals.sort(this.orderByIndex);
+    this.listOfIntervals = this.listOfIntervals.sort(this.orderByIndex);
   }
 
   resetTimerTicks() {
@@ -55,7 +55,7 @@ export class TimerTickService {
     timerTick.intervalSeconds = timerTickDto.intervalSeconds;
     timerTick.secondsLeft = timerTickDto.intervalSeconds;
     timerTick.id = timerTickDto.id;
-    timerTick.index = timerTickDto.index || this.listOfIntervals.length;
+    timerTick.position = timerTickDto.position;
     return this.update(timerTick);
   }
 
@@ -143,11 +143,11 @@ export class TimerTickService {
 
   private orderByIndex(a: TimerTick, b: TimerTick) {
     console.log(a, b);
-    if (a.index < b.index) {
+    if (a.position < b.position) {
       console.log('-1');
       return -1;
     }
-    if (a.index > b.index) {
+    if (a.position > b.position) {
       console.log('1');
       return 1;
     }
