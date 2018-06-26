@@ -160,34 +160,11 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
           this.timerTickService.getTotalPercentage()
         );
 
-        this.applyValuesPerTick(currentTimerTick);
-
         if (currentTimerTick.secondsLeft === 0) {
           currentTimerTick.currentActive = false;
           this.triggerScrollTo(currentTimerTick.id);
         }
       });
-  }
-
-  // maybe move that into service
-  private applyValuesPerTick(currentTimerTick: TimerTick) {
-    console.log(currentTimerTick.secondsLeft);
-    currentTimerTick.timeLeft = this.timerTickService.getTimeLeft(
-      currentTimerTick.secondsLeft
-    );
-    currentTimerTick.percentage = this.timerTickService.getPercentage(
-      currentTimerTick.intervalSeconds,
-      currentTimerTick.secondsLeft
-    );
-
-    currentTimerTick.timeLeft = this.timerTickService.getTimeLeft(
-      currentTimerTick.secondsLeft
-    );
-
-    currentTimerTick.secondsRan = this.timerTickService.calculateSecondsRan(
-      currentTimerTick.intervalSeconds,
-      currentTimerTick.secondsLeft
-    );
   }
 
   private setInitialtimerTicksForTalk() {
