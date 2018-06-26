@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Talk } from '../models/talk.model';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickDto } from '../models/timertickDto.model';
 import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
 
 @Injectable({
@@ -25,7 +26,7 @@ export class TalkStorageService {
   }
 
   addToTalk(talkId: string, timerTick: TimerTick) {
-    return this.http.post<TimerTick>(
+    return this.http.post<TimerTickDto>(
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${
         this.timerTickEndpoint
       }`,
@@ -34,7 +35,7 @@ export class TalkStorageService {
   }
 
   updateTimerTick(talkId: string, updateModel: TimerTickUpdateModel) {
-    return this.http.put<TimerTick>(
+    return this.http.put<TimerTickDto>(
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${
         this.timerTickEndpoint
       }${updateModel.id}`,
@@ -59,7 +60,7 @@ export class TalkStorageService {
   }
 
   getAllTimerTicks(talkId: string) {
-    return this.http.get<TimerTick[]>(
+    return this.http.get<TimerTickDto[]>(
       `${this.actionUrl}${this.talkEndpoint}${talkId}/${this.timerTickEndpoint}`
     );
   }

@@ -14,9 +14,11 @@
           <input type="text" formControlName="timeInMinutes" class="form-control" id="inlineFormInputGroup" placeholder="Time in minutes">
         </div>
       </div>
-
       <div class="col-auto">
-        <button type="submit" class="btn btn-primary mb-2" [disabled]="!form.valid || timerStarted">Add</button>
+        <button type="submit" class="btn btn-primary mb-2" [disabled]="!form.valid || timerStarted">
+          <span *ngIf="form.value.id">Update</span>
+          <span *ngIf="!form.value.id">Add</span>
+        </button>
       </div>
     </div>
   </form>

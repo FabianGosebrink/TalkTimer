@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TimerTick } from '../models/timerTick.model';
+import { TimerTickDto } from '../models/timertickDto.model';
 import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
+import { TimerTickService } from '../services/timer-tick.service';
 
 @Component({
   selector: 'app-talk-form',
@@ -24,7 +25,7 @@ export class TalkFormComponent implements OnInit {
   @Output() reset = new EventEmitter();
   form: FormGroup;
 
-  constructor() {}
+  constructor(private readonly timerTickService: TimerTickService) {}
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -45,7 +46,12 @@ export class TalkFormComponent implements OnInit {
       this.intervalUpdated.emit(toSend);
     } else {
       const topic = this.form.value.topic || '';
-      const timerTick = new TimerTick(topic, enteredValueInSeconds);
+
+      const temp = {
+        topic,
+        intervalSeconds: enteredValueInSeconds
+      } as TimerTickDto;
+      const timerTick = this.timerTickService.createFrom(temp);
       this.intervalAdded.emit(timerTick);
     }
     this.form.reset();

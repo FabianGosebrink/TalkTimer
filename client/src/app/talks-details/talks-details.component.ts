@@ -8,6 +8,7 @@ import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil, tap } from 'rxjs/operators';
 import { Talk } from '../models/talk.model';
 import { TimerTick } from '../models/timerTick.model';
+import { TimerTickDto } from '../models/timertickDto.model';
 import { TimerTickUpdateModel } from '../models/timerTickUpdate.model';
 import { TalkStorageService } from '../services/talk-storage.service';
 import { TimerTickService } from '../services/timer-tick.service';
@@ -39,43 +40,33 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
     this.setInitialtimerTicksForTalk();
   }
 
-  private setInitialtimerTicksForTalk() {
-    this.timerTickService.resetTimerTicks();
-    const id = this.activatedRoute.snapshot.params['talkId'];
-    this.selectedTalk$ = this.talkStorageService.getSingle(id);
-    this.talkStorageService
-      .getAllTimerTicks(id)
-      .subscribe((result: TimerTick[]) => {
-        result.forEach(timerTick => {
-          const toAdd = new TimerTick(
-            timerTick.topic,
-            timerTick.intervalSeconds
-          );
-          toAdd.id = timerTick.id;
-          this.timerTickService.addTimerTick(toAdd);
-        });
-        this.setTotalTimeAndPercentage();
-      });
-  }
-
   ngOnDestroy(): void {
     this.timerTickService.resetTimerTicks();
   }
 
   intervalAdded(timerTick: TimerTick) {
     const talkId = this.activatedRoute.snapshot.params['talkId'];
-    this.talkStorageService.addToTalk(talkId, timerTick).subscribe(() => {
-      this.timerTickService.addTimerTick(timerTick);
-      this.setTotalTimeAndPercentage();
-    });
+    this.talkStorageService
+      .addToTalk(talkId, timerTick)
+      .subscribe((addedTimerTickDto: TimerTickDto) => {
+        const addedTimerTick = this.timerTickService.createFrom(
+          addedTimerTickDto
+        );
+        this.timerTickService.addTimerTick(addedTimerTick);
+        this.setTotalTimeAndPercentage();
+      });
   }
 
   intervalUpdated(updateModel: TimerTickUpdateModel) {
     const talkId = this.activatedRoute.snapshot.params['talkId'];
     this.talkStorageService
       .updateTimerTick(talkId, updateModel)
-      .subscribe((timerTick: TimerTick) => {
-        this.setInitialtimerTicksForTalk();
+      .subscribe((updatedTimerTickDto: TimerTickDto) => {
+        const updatedTimerTick = this.timerTickService.createFrom(
+          updatedTimerTickDto
+        );
+        this.timerTickService.updateTimerTick(updatedTimerTick);
+        this.setTotalTimeAndPercentage();
       });
   }
 
@@ -148,6 +139,23 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  private setInitialtimerTicksForTalk() {
+    this.timerTickService.resetTimerTicks();
+    const id = this.activatedRoute.snapshot.params['talkId'];
+    this.selectedTalk$ = this.talkStorageService.getSingle(id);
+    this.talkStorageService
+      .getAllTimerTicks(id)
+      .subscribe((result: TimerTickDto[]) => {
+        const timerTicks = result.map(element => {
+          return this.timerTickService.createFrom(element);
+        });
+
+        timerTicks.forEach(toAdd => {
+          this.timerTickService.addTimerTick(toAdd);
+        });
+        this.setTotalTimeAndPercentage();
+      });
+  }
   private fireDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

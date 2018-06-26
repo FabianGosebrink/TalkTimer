@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  isDesktop: false,
   server: 'https://localhost:44343/',
   stsServer: 'https://localhost:44318',
   clientApp: 'https://localhost:4200',
