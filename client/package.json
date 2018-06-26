@@ -6,7 +6,7 @@
     "start": "ng serve --ssl --ssl-key ssl/server.key --ssl-cert ssl/server.crt",
     "build": "ng build",
     "build-web-prod": "ng build --prod --output-path=\".dist/web\" --base-href ./",
-    "build-all": "npm run build-prod && npm run build-desktop && npm run zip-desktop",
+    "build-all": "npm run build-web-prod && npm run build-desktop && npm run zip-desktop",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

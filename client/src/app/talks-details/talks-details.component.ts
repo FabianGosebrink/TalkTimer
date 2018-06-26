@@ -140,6 +140,9 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const timerTick = this.timerTickService.listOfIntervals[index];
+
+    this.triggerScrollTo(timerTick.id);
     const currentObservable = this.timers[index];
 
     currentObservable
@@ -162,7 +165,10 @@ export class TalksDetailsComponent implements OnInit, OnDestroy {
 
         if (currentTimerTick.secondsLeft === 0) {
           currentTimerTick.currentActive = false;
-          this.triggerScrollTo(currentTimerTick.id);
+          const nextTimerTick = this.timerTickService.listOfIntervals[
+            index + 1
+          ];
+          this.triggerScrollTo(nextTimerTick.id);
         }
       });
   }

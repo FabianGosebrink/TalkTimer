@@ -63,7 +63,8 @@ export class TalkFormComponent implements OnInit {
     this.form.setValue({
       timeInMinutes: timerTickUpdateModel.intervalSeconds / 60,
       topic: timerTickUpdateModel.topic,
-      id: timerTickUpdateModel.id
+      id: timerTickUpdateModel.id,
+      position: timerTickUpdateModel.position
     });
   }
 
